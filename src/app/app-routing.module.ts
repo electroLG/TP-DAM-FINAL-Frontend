@@ -11,6 +11,25 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'dispositivo/:id',
+    loadChildren: () => import('./dispositivo/dispositivo.module').then( m => m.DispositivoPageModule)
+  },
+  {
+    path: 'graph/:id',
+    loadChildren: () => import('./graph/graph.module').then( m => m.GraphPageModule)
+  },
+
+  {
+    path: 'mediciones/:id',
+    loadChildren: () => import('./mediciones/mediciones.module').then( m => m.MedicionesPageModule)
+  },
+  {
+    path: 'logs-riego/:id',
+    loadChildren: () => import('./logs-riego/logs-riego.module').then( m => m.LogsRiegoPageModule)
+  },
+
+
 ];
 
 @NgModule({

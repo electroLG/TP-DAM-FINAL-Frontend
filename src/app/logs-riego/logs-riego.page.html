@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-button routerLink="/"> -->
+          <ion-icon slot="icon-only" name="arrow-back" onClick="history.go(-1);"></ion-icon>
+      <!-- </ion-button> -->
+  </ion-buttons>
+    <ion-title style="text-align:center">Logs de Riego eV {{idElectrovalvula}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<div style="text-align:center" *ngIf="!this.dbStatus">
+  <br>
+    <h2>¡OPS! No se pudo acceder a la Base de Datos</h2>
+    <br>
+      <img  src="../../assets/dberror.png">
+    <br>
+    <h4>Verifique su conexión a internet o disponibilidad del servcio.</h4>
+  <br>
+</div>
+<ion-content>
+  <div *ngIf="this.dbStatus">
+    <ion-list-header>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col size="8">
+            <p style="text-align:center">Fecha</p>
+          </ion-col>
+          <ion-col size="4">
+            <p >Valor</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list-header>
+    <ion-list >
+      <ion-item *ngFor="let log of logs" lines="full">
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="8">
+              <div>{{log.fecha | fecha}}</div>
+            </ion-col>
+            <ion-col size="4">
+              <div>{{log.apertura | apertura }}</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
