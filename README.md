@@ -140,6 +140,47 @@ Falla durante el accionamietno de electroválvula
 
 ### Pipes
 
+El siguiente pipe representa el estado de la electroválvula en ABIERTA o CERRADA si el mismo obtiene de la base de datos el valor 1 o 0 , de esta manera la lectura en pantalla de dicho valor es mas amigable para el usuario.
+
+Definición en archivo `apertura.pipe.ts`
+
+```js
+@Pipe({
+  name: 'apertura'
+})
+export class AperturaPipe implements PipeTransform {
+  data: string;
+  transform(value: number): string {
+
+    if(value === 1)
+    {
+      this.data='ABIERTA';
+    }
+    else
+    {
+      this.data='CERRADA';
+    }
+
+
+    return this.data;
+  }
+}
+```
+Implementación en page html  log-riego.page.html
+```web
+      <ion-item *ngFor="let log of logs" lines="full">
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="8">
+              <div>{{log.fecha | fecha}}</div>
+            </ion-col>
+            <ion-col size="4">
+              <div>{{log.apertura | apertura }}</div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+```
 ### Directiva
 
 
