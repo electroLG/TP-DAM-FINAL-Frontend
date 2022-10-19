@@ -58,7 +58,7 @@ El acceso a esta vista implica la comunicación con la base de datos para obtene
 
 ### El servicio
 
-Métodos en `api-conn.service.ts`
+Métodos en `api-conn.service.ts` para impactar endpoints de Backend
 ```js
  getDispositivo(id): Promise<Dispositivo> {
 
