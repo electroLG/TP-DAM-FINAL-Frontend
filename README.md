@@ -35,30 +35,19 @@ El framework de `ìonic` requiere versiones de node js superiores a la 12, si no
 
 ### Organización del proyecto
 
-En la siguiente ilustración podés ver cómo está organizado el proyecto para que tengas en claro qué cosas hay en cada lugar.
+En la siguiente ilustración podés ver cómo está organizado el proyecto.
 
-```sh
-├── db                          # directorio de la DB
-│   ├── data                    # estructura y datos de la DB
-│   └── dumps                   # directorio de estructuras de la DB
-│       └── TPF-DAM-FINAL.sql   # estructura con la base de datos "DAM"
-├── api                         # directorio de la api
-│   ├── mysql                   # configuraciòn de pool de conexiones a la db
-│   │   └── index.js            # archivo de configuraciòn de pool de conexiones a la db
-│   ├── routes                  # rutas para los endpoints del backend
-│   │   ├── dispositivo         # carpeta de ruta de endpoints para dispositivos
-│   │   │    └── index.js       # archivo endpoints para dispositivos
-│   │   ├── logRiego            # carpeta de ruta de endpoints para logRiegos
-│   │   │    └── index.js       # archivo endpoints para logRiegos
-│   │   └── medicion            # carpeta de ruta de endpoints para medicion
-│   │        └── index.js       # archivo endpoints para medicion
-│   └── index.js                # codigo del Backend 
-├── docs                        # documentacion general del proyecto
-├── docker-compose.yml          # archivo donde se aloja la configuracion completa de docker
-├── README.md                   # este archivo
-├── package.json                # configuracion de proyecto NodeJS
-└── package-lock.json           # configuracion de proyecto NodeJS
-```
+![](docs/DAM-Estructura.png)
+
+Los componentes principales del proyecto en ionic son 
+
+1. Pages: Paginas que se visualizan al navegar por la aplicación, están compuestas por 5 archivos ( htmls, scss, page.ts, module.ts. routing.module.ts)
+2. Servicios: Métodos que se encuentran diponibles para las distintas pages, en el caso de nuestra aplicacion `ApiConnService` accede a los endpoints expuestos en el backend. Por otro lado el servicio `timestamp`, aplica formato a los datos de fecha para poder almacenarlos en la base de datos. 
+3. Pipes: Se encargan de alterar la forma en la que se visualizan los datos en el html sin alterarlos en el origen (son como una mascara). 
+4. Directivas: Se encargan de realizar cambios en el DOM html de forma reactiva, en nuestro proyecto se realiza el cambio de color del nombre del dispositivo del listado de dispositivos cuando el mouse pasa por encima del mismo.
+
+Iremos viendo algunos en detalle al adentrarnos en la apliacaión
+
 ### Poner en marcha el Frontend
 
 Para poner en marcha el Backend debemos ejecutar  el comando `ionic serve` desde la raíz del proyecto. Este comando va a arrancar el Frontend en la siguiente direcciòn http://localhost:8100. Donde aparecerá la siguiente pantalla.
@@ -67,8 +56,9 @@ Para poner en marcha el Backend debemos ejecutar  el comando `ionic serve` desde
 
 El acceso a esta vista implica la comunicación con la base de datos para obtener la lista de dispositovos que se ha graficado. Dicha comunicación se realiza a través de un servicio denominando `ApiConnService` el cual se encarga de realizar todas las consultas a la base de datos consultando los endpoints expuestos en el Backend.
 
-### 
+### El servicio
 
+Métodos en api-conn.service.ts
 ```js
  getDispositivo(id): Promise<Dispositivo> {
 
@@ -109,6 +99,30 @@ El acceso a esta vista implica la comunicación con la base de datos para obtene
     return this._http.post<any>('http://localhost:8000/api/medicion/add',body).toPromise();
   }
 ```
+Ejemplo de llamada a servicio desde page dispositivo.page.ts
+
+```js
+   async obtenerDatos()
+   {
+
+    this.data=this.activatedRoute.snapshot.paramMap.get('id');
+
+    try{
+
+           this.med = await this.conndb.getUltimaMedicion(this.data);
+           this.medFunca = this.med.valor;
+           this.dispositivo = await this.conndb.getDispositivo(this.data);
+           this.electrovalvula=this.dispositivo.electrovalvulaId;
+           this.nombre=this.dispositivo.nombre;
+           this.evEstado = await this.conndb.getLogsRiegoEv(this.electrovalvula);
+           this.estadoElectrovalvula=this.evEstado.apertura;
+      }
+      catch (error)
+      {
+        this.dbStatus=false;
+      }
+   }
+```
 
 ### Navegación por el FrontEnd
 
@@ -124,162 +138,11 @@ Falla durante el accionamietno de electroválvula
 
 ![](docs/DAM-Errordb2.png)
 
+### Pipes
 
-### Organización de la base de datos.
+### Directiva
 
-La base de datos se encuentra formada por 4 tablas
-                
-1. Mediciones
-2. Dispositivos
-3. Electrovalvulas
-4. Log_Riegos
 
-Las realaciones entre las tablas se observan en el siguiente diagrama.
 
-   ![](docs/DAM-bd-relaciones.png)
-   
-### Conexión de la base de datos.
 
-La conexión a la base de datos se realiza por medio de un pool de conexiones medainte la configuración de la variable configMysql, luego se crea el pool de conexiones con la configuración de la variable y se exporta el módulo `pool` con el método `query` para realizar las consultas a la bd.
 
-```js
-var configMysql = {
-    connectionLimit: 10,      
-    host: 'mysql-server',
-    port:  '3306',
-    user: 'root',
-    password: 'userpass',
-    database: 'DAM'
-}
-```
-
-En el caso de presentarse errores en la conexión se informorá por conosola
-
-```js
-var pool = mysql.createPool(configMysql);
-pool.getConnection( (err, connection) => {
-    if (err) {
-        switch (err.code) {
-            case 'PROTOCOL_CONNECTION_LOST':
-                console.error('La conexion a la DB se cerró.');
-                break;
-            case 'ER_CON_COUNT_ERROR':
-                console.error('La base de datos tiene muchas conexiones');
-                break;
-            case 'ECONNREFUSED':
-                console.error('La conexion fue rechazada');
-        }
-        if (connection) {
-            connection.release();
-
-        }
-        return;
-    }
-});
-```
-Los endpoints de la api se encuentran ruteados para mantener el código ordenado como se observa en las carpetas de la organización del proyecto.
-
--------------
-### Endpoints de dispositivo.
--------------
-
-A continuación se detallan los endpoints y sus respuestas
-
-Listado de dispositivos http://localhost:8000/api/dispositivo/
-```json
-[{"dispositivoId":1,"nombre":"Sensor 1","ubicacion":"Patio","electrovalvulaId":1},
-{"dispositivoId":2,"nombre":"Sensor 2","ubicacion":"Cocina","electrovalvulaId":2},
-{"dispositivoId":3,"nombre":"Sensor 3","ubicacion":"Jardin Delantero","electrovalvulaId":3},
-{"dispositivoId":4,"nombre":"Sensor 4","ubicacion":"Living","electrovalvulaId":4},
-{"dispositivoId":5,"nombre":"Sensor 5","ubicacion":"Habitacion 1","electrovalvulaId":5},
-{"dispositivoId":6,"nombre":"Sensor 6","ubicacion":"Habitacion 2","electrovalvulaId":6}]
-```
-Consulta de dispositivo http://localhost:8000/api/dispositivo/1
-
-```json
-[{"dispositivoId":1,"nombre":"Sensor 1","ubicacion":"Patio","electrovalvulaId":1},
-```
--------------
-### Endpoints de medicion.
--------------
-
-A continuación se detallan los endpoints y sus respuestas
-
-Ultima medición por id de dispositivo http://localhost:8000/api/medicion/1
-```json
-[{"medicionId":15,"fecha":"2022-10-18T19:03:03.000Z","valor":"94","dispositivoId":1}]
-```
-Mediciones por id de dispositivo http://localhost:8000/api/medicion/1/todas
-
-```json
-[{"medicionId":15,"fecha":"2022-10-18T19:03:03.000Z","valor":"94","dispositivoId":1},
-{"medicionId":14,"fecha":"2022-10-18T19:03:02.000Z","valor":"34","dispositivoId":1},
-{"medicionId":13,"fecha":"2022-10-18T19:03:01.000Z","valor":"71","dispositivoId":1},
-{"medicionId":12,"fecha":"2022-10-18T19:03:00.000Z","valor":"11","dispositivoId":1},
-{"medicionId":1,"fecha":"2020-11-26T21:19:41.000Z","valor":"60","dispositivoId":1},
-{"medicionId":2,"fecha":"2020-11-26T21:19:41.000Z","valor":"40","dispositivoId":1},
-{"medicionId":8,"fecha":"2020-11-26T21:19:41.000Z","valor":"20","dispositivoId":1}]
-```
-Agregar medición por id de dispositivo http://localhost:8000/api/medicion/add
-
-Metodo POST parámetros enviado en el body
-
-```json
-[{"fecha":"2022-10-11 14:56:59","valor":"35","dispositivoId":"2"}]
-```
-
-respuesta
-```json
-{
-    "fieldCount": 0,
-    "affectedRows": 1,
-    "insertId": 27,
-    "serverStatus": 2,
-    "warningCount": 0,
-    "message": "",
-    "protocol41": true,
-    "changedRows": 0
-}
-```
--------------
-### Endpoints de Logs de Riego.
--------------
-
-A continuación se detallan los endpoints y sus respuestas
-
-Listado de Logs de Riego por electroválvula http://localhost:8000/api/logRiego/1
-
-```json
-[{"logRiegoId":10,"apertura":0,"fecha":"2022-10-18T19:03:03.000Z","electrovalvulaId":1},
-{"logRiegoId":9,"apertura":1,"fecha":"2022-10-18T19:03:02.000Z","electrovalvulaId":1},
-{"logRiegoId":8,"apertura":0,"fecha":"2022-10-18T19:03:01.000Z","electrovalvulaId":1},
-{"logRiegoId":7,"apertura":1,"fecha":"2022-10-18T19:03:00.000Z","electrovalvulaId":1},
-{"logRiegoId":1,"apertura":0,"fecha":"2020-11-26T21:19:41.000Z","electrovalvulaId":1}]
-```
-Ultimo estado de electroválvula por id http://localhost:8000/api/logRiego/1/estado
-
-```json
-[{"logRiegoId":10,"apertura":0,"fecha":"2022-10-18T19:03:03.000Z","electrovalvulaId":1}]
-```
-
-Agregar log de riego por id de electroválvula http://localhost:8000/api/logRiego/add
-
-Metodo POST parámetros enviado en el body
-
-```json
-[{"apertura":"0","fecha":"2022-10-10 13:22:32","electrovalvulaId":"3"}]
-```
-
-respuesta
-```json
-{
-    "fieldCount": 0,
-    "affectedRows": 1,
-    "insertId": 22,
-    "serverStatus": 2,
-    "warningCount": 0,
-    "message": "",
-    "protocol41": true,
-    "changedRows": 0
-}
-```
