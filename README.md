@@ -44,7 +44,7 @@ Los componentes principales del proyecto en ionic son
 1. Pages: Paginas que se visualizan al navegar por la aplicación, están compuestas por 5 archivos ( htmls, scss, page.ts, module.ts. routing.module.ts)
 2. Servicios: Métodos que se encuentran diponibles para las distintas pages, en el caso de nuestra aplicacion `ApiConnService` accede a los endpoints expuestos en el backend. Por otro lado el servicio `timestamp`, aplica formato a los datos de fecha para poder almacenarlos en la base de datos. 
 3. Pipes: Se encargan de alterar la forma en la que se visualizan los datos en el html sin alterarlos en el origen (son como una mascara). 
-4. Directivas: Se encargan de realizar cambios en el DOM html de forma reactiva, en nuestro proyecto se realiza el cambio de color del nombre del dispositivo del listado de dispositivos cuando el mouse pasa por encima del mismo.
+4. Directivas: Se encargan de realizar cambios en el DOM html de forma reactiva, en nuestro proyecto se realiza el cambio de color del nombre del dispositivo en el listado de dispositivos cuando el mouse pasa por encima del mismo.
 
 Iremos viendo algunos en detalle al adentrarnos en la apliacaión
 
@@ -54,11 +54,11 @@ Para poner en marcha el Backend debemos ejecutar  el comando `ionic serve` desde
 
 ![](docs/DAM-Principal.png)
 
-El acceso a esta vista implica la comunicación con la base de datos para obtener la lista de dispositovos que se ha graficado. Dicha comunicación se realiza a través de un servicio denominando `ApiConnService` el cual se encarga de realizar todas las consultas a la base de datos consultando los endpoints expuestos en el Backend.
+El acceso a esta vista implica la comunicación con la base de datos para obtener la lista de dispositovos que se ha graficado. Dicha comunicación se realiza a través de un servicio denominando `ApiConnService` el cual se encarga de realizar todas las consultas a la base de datos accediendo a los endpoints expuestos desde el Backend.
 
 ### El servicio
 
-Métodos en api-conn.service.ts
+Métodos en `api-conn.service.ts`
 ```js
  getDispositivo(id): Promise<Dispositivo> {
 
@@ -99,7 +99,7 @@ Métodos en api-conn.service.ts
     return this._http.post<any>('http://localhost:8000/api/medicion/add',body).toPromise();
   }
 ```
-Ejemplo de llamada a servicio desde page dispositivo.page.ts
+Ejemplo de llamada a servicio desde page `dispositivo.page.ts`
 
 ```js
    async obtenerDatos()
@@ -130,7 +130,7 @@ Te damos un breve vistazo por el layout de navegación del FrontEnd donde porás
 
 ![](docs/DAM-LayoutFrontend.png)
 
-En el caso de haber problemas con la conectividad el Backend aparecerán las siguientes pages, indicando la falla.
+En el caso de haber problemas con la conectividad del Backend aparecerán las siguientes pages indicando la falla.
 
 ![](docs/DAM-Errordbpng.png)
 
@@ -140,7 +140,7 @@ Falla durante el accionamietno de electroválvula
 
 ### Pipes
 
-El siguiente pipe representa el estado de la electroválvula en ABIERTA o CERRADA si el mismo obtiene de la base de datos el valor 1 o 0 , de esta manera la lectura en pantalla de dicho valor es mas amigable para el usuario.
+El siguiente pipe representa el estado de la electroválvula  ABIERTA o CERRADA tomando la lectura de 1 o 0 desde la base de datos, de esta manera se facilita la lectura en pantalla para el usuario.
 
 Definición en archivo `apertura.pipe.ts`
 
@@ -166,7 +166,10 @@ export class AperturaPipe implements PipeTransform {
   }
 }
 ```
-Implementación en page html  log-riego.page.html
+Implementación en page html  `log-riego.page.html`
+
+A cada log leído se le aplica el pipe de apertura como así también el de fecha
+
 ```web
       <ion-item *ngFor="let log of logs" lines="full">
         <ion-grid>
@@ -181,9 +184,76 @@ Implementación en page html  log-riego.page.html
         </ion-grid>
       </ion-item>
 ```
+Definición en archivo `fecha.pipe.ts`
+
+A cada log leído se le aplica el pipe de fecha al campo de fecha obtenido desde la base de datos
+
+```js
+@Pipe({
+  name: 'fecha'
+})
+export class FechaPipe implements PipeTransform {
+
+  fecha: string;
+  transform(value: string): string {
+
+    this.fecha=value.substring(0,10) +' '+ value.substring(11,19);
+
+    return this.fecha;
+  }
+
+}
+```
+
 ### Directiva
 
+Definición en archivo `directiva.directive.ts`
 
+```js
+@Directive({
+  selector: '[appDirectiva]'
+})
+export class DirectivaDirective {
 
+  constructor(private el: ElementRef,private renderer: Renderer2) {
 
+  }
+
+  private cambiar(color: string) //Metodo privado
+  {
+
+    this.renderer.setStyle(this.el.nativeElement,'color', color);
+
+  }
+
+  @HostListener('mouseenter') onmouseEnter(){
+  this.cambiar('green');
+  }
+
+  @HostListener('mouseleave') onmouseLeave(){
+    this.cambiar('');
+  }
+
+}
+
+```
+Implementación en page html  `home.page.html`
+
+```web
+  <ion-list>
+    <ion-item *ngFor="let dispositivo of listadoDispositivo" routerLink="/dispositivo/{{dispositivo.dispositivoId}}" routerDirection="root">   <!-- <ion-item *ngFor="let dispositivo of listadoDispositivo" routerLink="/dispositivo/{{dispositivo.dispositivoId}}" routerDirection="root"> -->
+        <ion-avatar slot="start">
+            <ion-icon  size="large" name="thermometer"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+            <h2 appDirectiva>Sensor {{dispositivo.dispositivoId}} - {{dispositivo.nombre}}</h2>
+            <h3>
+                <ion-icon name="pin"></ion-icon> {{dispositivo.ubicacion}}</h3>
+        </ion-label>
+    </ion-item>
+  </ion-list>
+```
+Directiva en ejecución  `home.page.html`
+
+![](docs/DAM-Directiva.png)
 
