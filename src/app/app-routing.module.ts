@@ -16,11 +16,6 @@ const routes: Routes = [
     loadChildren: () => import('./dispositivo/dispositivo.module').then( m => m.DispositivoPageModule)
   },
   {
-    path: 'graph/:id',
-    loadChildren: () => import('./graph/graph.module').then( m => m.GraphPageModule)
-  },
-
-  {
     path: 'mediciones/:id',
     loadChildren: () => import('./mediciones/mediciones.module').then( m => m.MedicionesPageModule)
   },

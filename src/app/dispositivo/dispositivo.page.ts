@@ -10,9 +10,14 @@ import { Log } from '../model/Log';
 import { json } from 'express';
 import { time } from 'console';
 
-
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/solid-gauge')(Highcharts);
+
+
+// require('highcharts/modules/data')(Highcharts);
+// require('highcharts/modules/exporting')(Highcharts);
+// require('highcharts/modules/export-data')(Highcharts);
+// require('highcharts/modules/accessibility')(Highcharts);
 
 
 @Component({
@@ -39,6 +44,7 @@ export class DispositivoPage  {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public myChart;
   private chartOptions;
+
 
   constructor(public conndb: ApiConnService,private activatedRoute: ActivatedRoute, public now: TimestampService) {
     this.dbStatus=true;
@@ -95,9 +101,9 @@ export class DispositivoPage  {
         // eslint-disable-next-line max-len
         this.respPostLR=await this.conndb.postLogRiego(String(Number(this.estadoElectrovalvula)),this.now.getTimestamp(),String(this.electrovalvula));
         if(this.estadoElectrovalvula){
-              this.med.valor=this.getRandomInt(1,49);}
+              this.med.valor=this.getRandomInt(50,70);} //this.med.valor=this.getRandomInt(1,49)
         else{
-              this.med.valor=this.getRandomInt(50,100);
+              this.med.valor=this.getRandomInt(50,70); //this.med.valor=this.getRandomInt(50,100);
         }
         this.updateChart();
         this.respPostLR=await this.conndb.postMedicion(this.now.getTimestamp(),String(Number(this.med.valor)),String(this.data));
@@ -112,6 +118,8 @@ export class DispositivoPage  {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+
+
 
   generarChart() {
     this.chartOptions={
