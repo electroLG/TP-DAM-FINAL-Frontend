@@ -77,6 +77,7 @@ export class DispositivoPage  {
       {
         this.dbStatus=false;
       }
+
    }
 
   updateChart(){
