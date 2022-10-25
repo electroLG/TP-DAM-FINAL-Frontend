@@ -265,7 +265,22 @@ En la terminal comenzamos con el nodeJS nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 command -v nvm
 nvm -v
-nvm install node
+nvm install node v16.18.0
+nvm use node v16.18.0
+sudo apt install docker-compose
+docker-compose up
+
+"Si no funciona" 
+    Add user to docker group (if not already added)
+    sudo usermod -aG docker $USER
+    2. create a symbolic link to /usr/bin using the following command
+    $ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    3. Restart docker service
+    $ sudo service docker restart
+
+Al ejecutar nuevamente, va a bajar las imagenes de los docker"
+
+
 
 
 
