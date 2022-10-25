@@ -257,3 +257,15 @@ Directiva en ejecución  `home.page.html`
 
 ![](docs/DAM-Directiva.png)
 
+### Pasos de la instalacion
+
+vscode instalado con ionic essentials, ts hero, ts importer.
+En la terminal comenzamos con el nodeJS nvm
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+command -v nvm
+nvm -v
+nvm install node
+
+
+
