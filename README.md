@@ -280,6 +280,10 @@ docker-compose up
 
 Al ejecutar nuevamente, va a bajar las imagenes de los docker"
 
+En el frontend
+npm i -D -E @angular/cli   or npm install -g @angular/cli
+npm i -g @ionic/cli
+
 
 
 
