@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title   style="text-align:center">
-      Sistema de Riego
+      Monitore de Servicios de Planta
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -38,6 +38,7 @@
         <ion-card>
           <ion-card-header >
             <ion-card-title appDirectiva routerLink="/dispositivo/{{dispositivo.dispositivoId}}" routerDirection="root">Sensor {{dispositivo.dispositivoId}} - {{dispositivo.nombre}}</ion-card-title>
+            <!-- <ion-card-title appDirectiva routerLink="/grafico" routerDirection="root">Sensor {{dispositivo.dispositivoId}} - {{dispositivo.nombre}}</ion-card-title> -->
             <ion-card-subtitle appDirectiva>{{dispositivo.ubicacion}}</ion-card-subtitle>
           </ion-card-header>
 
@@ -52,13 +53,13 @@
       </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-datetime #datetime>
+    <!-- <ion-datetime #datetime>
       <ion-buttons slot="buttons">
         <ion-button color="danger" (click)="datetime.reset()">Reset</ion-button>
         <ion-button color="primary" (click)="datetime.cancel()">Never mind</ion-button>
         <ion-button color="primary" (click)="datetime.confirm()">All Set</ion-button>
       </ion-buttons>
-    </ion-datetime>
+    </ion-datetime> -->
 
 </ion-content>
 

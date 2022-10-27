@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'logs-riego/:id',
     loadChildren: () => import('./logs-riego/logs-riego.module').then( m => m.LogsRiegoPageModule)
   },
+  {
+    path: 'grafico',
+    loadChildren: () => import('./grafico/grafico.module').then( m => m.GraficoPageModule)
+  },
 
 
 ];

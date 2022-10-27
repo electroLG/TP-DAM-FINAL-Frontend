@@ -60,5 +60,16 @@ export class ApiConnService {
     const body ={'fecha': fechadate,'valor': valorMed,'dispositivoId':dispId};
     return this._http.post<any>('http://localhost:8000/api/medicion/add',body).toPromise();
   }
+  //Intentos de conexión a la Base de Batos //
 
+  getTepelcoLogs(): Promise<any> {
+    return this._http.get<any>('http://192.168.0.91:8000/graf/todos').toPromise();
+  }
+
+  getTepelcoLogsSemana(): Promise<any> {
+    return this._http.get<any>('http://192.168.0.91:8000/graf/semana').toPromise();
+  }
+  getTepelcoLogsDia(): Promise<any> {
+    return this._http.get<any>('http://192.168.0.91:8000/graf/dia').toPromise();
+  }
 }

@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button onClick="history.go(-1);">
+          <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    <br>
+    </ion-buttons>
+    <ion-title>Registros históricos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="mostrarTepelcoLogs()">Traer todo</ion-button>
+  <ion-button (click)="mostrarTepelcoLogsSemana()">Ultima Semana</ion-button>
+  <ion-button (click)="mostrarTepelcoLogsDia()">Ultimo Dia</ion-button>
+  <ion-button (click)="clearTepelcoLogs()">BORRAR</ion-button>
+  <div id="container3" style="width: 100%; height: 600px;"></div>
+</ion-content>
