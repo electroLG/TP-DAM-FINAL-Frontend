@@ -8,6 +8,7 @@ require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/boost')(Highcharts);
 require('highcharts/modules/export-data')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
+require('highcharts/modules/series-label')(Highcharts);
 
 @Component({
   selector: 'app-grafico',
@@ -40,28 +41,19 @@ export class GraficoPage implements OnInit {
   async mostrarTepelcoLogs()
   {
       this.regenerarGrafico();
-      //console.log('Pido datos historicos');
       this.logs=await this.conndb.getTepelcoLogs();
-      //console.log('Llegaron datos historicos');
-      //console.log(this.logs);
       this.convertirDatos();
   }
   async mostrarTepelcoLogsSemana()
   {
       this.regenerarGrafico();
-      //console.log('Pido datos de la semana');
       this.logs=await this.conndb.getTepelcoLogsSemana();
-      //console.log('Llegaron datos de la semana');
-      //console.log(this.logs);
       this.convertirDatos();
   }
     async mostrarTepelcoLogsDia()
   {
       this.regenerarGrafico();
-      //console.log('Pido datos del día');
       this.logs=await this.conndb.getTepelcoLogsDia();
-      //console.log('Llegaron datos del día');
-      //console.log(this.logs);
       this.convertirDatos();
   }
 
@@ -84,14 +76,6 @@ convertirDatos(){
                                 Number(this.logs[i].fecha.substring(17,19))),
                                 Number(this.logs[i].dp_cartucho)];
 
-    // this.datagraf2[i]=[Date.UTC(Number(this.logs[i].fecha.substring(0,4)),
-    //                             Number(this.logs[i].fecha.substring(5,7))-1,
-    //                             Number(this.logs[i].fecha.substring(8,10)),
-    //                             Number(this.logs[i].fecha.substring(11,13)),
-    //                             Number(this.logs[i].fecha.substring(14,16)),
-    //                             Number(this.logs[i].fecha.substring(17,19))),
-    //                             Number(this.logs[i].dp_filtro)];
-
       this.datagraf2[i]=[this.datagraf[i][0],Number(this.logs[i].dp_filtro)];
 
    }
@@ -105,12 +89,12 @@ updateChartTepelco(){
    series: [{
       //type: 'area',
       data: this.datagraf,
-      name: "Cartucho"
+      name: 'Cartucho'
     },
     {
       //type: 'area',
       data: this.datagraf2,
-      name: "Filtro"
+      name: 'Filtro'
     }
   ]
 });
@@ -136,10 +120,11 @@ generarGraficoTepelco(){
     },
     subtitle: {
       text: document.ontouchstart === undefined ?
-        'Medido en relacion a los kPA' : 'Pinch the chart to zoom in'
+        'Medido en relacion a los Pa' : 'Pinch the chart to zoom in'
     },
     xAxis: {
       type: 'datetime',
+      gridLineWidth: 1,
       crosshair: true,
       title: {
         text: 'Timestamp'
@@ -148,50 +133,71 @@ generarGraficoTepelco(){
     yAxis: {
       crosshair: true,
       title: {
-        text: 'Diferencial de presión [kPa]'
+        text: 'Diferencial de presión [Pa]'
       }
     },
     legend: {
-      enabled: false
+      enabled: true
     },
-    plotOptions: {
-      area: {
-        fillColor: {
-          linearGradient: {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 1
-          },
-          stops: [
-            [0, Highcharts.getOptions().colors[0]],
-            [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-          ]
-        },
-        marker: {
-          radius: 2
-        },
-        lineWidth: 1,
-        states: {
-          hover: {
-            lineWidth: 1
-          }
-        },
-        threshold: null
+    accessibility: {
+      screenReaderSection: {
+        beforeChartFormat: '<{headingTagName}>{chartTitle}</{headingTagName}><div>{chartSubtitle}</div><div>{chartLongdesc}</div><div>{xAxisDescription}</div><div>{yAxisDescription}</div>'
       }
     },
+    // plotOptions: {
+    //   area: {
+    //     fillColor: {
+    //       linearGradient: {
+    //         x1: 0,
+    //         y1: 0,
+    //         x2: 0,
+    //         y2: 1
+    //       },
+    //       stops: [
+    //         [0, Highcharts.getOptions().colors[0]],
+    //         [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+    //       ]
+    //     },
+    //     marker: {
+    //       radius: 2
+    //     },
+    //     lineWidth: 1,
+    //     states: {
+    //       hover: {
+    //         lineWidth: 1
+    //       }
+    //     },
+    //     threshold: null
+    //   }
+    // },
 
+    tooltip: {
+      valueDecimals: 2
+      // headerFormat: '<b>{series.name}</b><br>',
+      // pointFormat: '{point.x:%e. %b}: {point.y:.2f} Pa'
+    },
+
+    // plotOptions: {
+    //   series: {
+    //     marker: {
+    //       enabled: true,
+    //       radius: 1
+    //     }
+    //   }
+    // },
+
+    //colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
     series: [{
       //type: 'area',
-      data: this.datagraf,
-      name: "Cartucho"
-    },
-    {
-      //type: 'area',
-      data: this.datagraf2,
-      name: "Filtro"
-    }
-  ]
+      name: 'Cartucho',
+      data: this.datagraf
+      },
+      {
+        //type: 'area',
+        name: 'Filtro',
+        data: this.datagraf2
+      }
+            ]
   };
   this.mygraph = Highcharts.chart('container3', this.graphOptions );
 }
