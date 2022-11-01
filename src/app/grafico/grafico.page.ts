@@ -145,49 +145,9 @@ generarGraficoTepelco(){
         beforeChartFormat: '<{headingTagName}>{chartTitle}</{headingTagName}><div>{chartSubtitle}</div><div>{chartLongdesc}</div><div>{xAxisDescription}</div><div>{yAxisDescription}</div>'
       }
     },
-    // plotOptions: {
-    //   area: {
-    //     fillColor: {
-    //       linearGradient: {
-    //         x1: 0,
-    //         y1: 0,
-    //         x2: 0,
-    //         y2: 1
-    //       },
-    //       stops: [
-    //         [0, Highcharts.getOptions().colors[0]],
-    //         [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-    //       ]
-    //     },
-    //     marker: {
-    //       radius: 2
-    //     },
-    //     lineWidth: 1,
-    //     states: {
-    //       hover: {
-    //         lineWidth: 1
-    //       }
-    //     },
-    //     threshold: null
-    //   }
-    // },
-
     tooltip: {
       valueDecimals: 2
-      // headerFormat: '<b>{series.name}</b><br>',
-      // pointFormat: '{point.x:%e. %b}: {point.y:.2f} Pa'
     },
-
-    // plotOptions: {
-    //   series: {
-    //     marker: {
-    //       enabled: true,
-    //       radius: 1
-    //     }
-    //   }
-    // },
-
-    //colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
     series: [{
       //type: 'area',
       name: 'Cartucho',
@@ -201,5 +161,21 @@ generarGraficoTepelco(){
             ]
   };
   this.mygraph = Highcharts.chart('container3', this.graphOptions );
+  Highcharts.setOptions({
+    lang: {
+        months: [
+            'Enero', 'Febrero', 'Marzo', 'Abril',
+            'Mayo', 'Junio', 'Julio', 'Agosto',
+            'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ],
+        weekdays: [
+            'Domingo', 'Lunes', 'Martes', 'Miercoles',
+            'Jueves', 'Viernes', 'Sabado'
+        ]
+    }
+  });
 }
 }
+
+
+
