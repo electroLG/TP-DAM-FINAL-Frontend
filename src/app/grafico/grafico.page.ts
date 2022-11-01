@@ -141,6 +141,7 @@ generarGraficoTepelco(){
     },
     accessibility: {
       screenReaderSection: {
+        // eslint-disable-next-line max-len
         beforeChartFormat: '<{headingTagName}>{chartTitle}</{headingTagName}><div>{chartSubtitle}</div><div>{chartLongdesc}</div><div>{xAxisDescription}</div><div>{yAxisDescription}</div>'
       }
     },
