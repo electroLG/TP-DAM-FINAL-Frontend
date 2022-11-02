@@ -6,14 +6,19 @@
 export class Dispositivo{
     private _dispositivoId: number;
     private _nombre: string;
+    private _tipo: string;
     private _ubicacion: string;
-    private _electrovalvulaId: number;
+    private _marca: string;
+    private _modelo: string;
+    private _estado: number;
 
-    constructor(dispositivo,nombre,ubicacion,electrovalvulaId){
+    constructor(dispositivo,nombre,ubicacion,marca,modelo,estado){
         this._dispositivoId=dispositivo;
         this._nombre=nombre;
         this._ubicacion=ubicacion;
-        this._electrovalvulaId=electrovalvulaId;
+        this._marca=marca;
+        this._modelo=modelo;
+        this._estado=estado;
     }
 
     public get dispositivoId(): number {
@@ -29,7 +34,12 @@ export class Dispositivo{
     public set nombre(value: string) {
         this._nombre = value;
     }
-
+    public get tipo(): string {
+      return this._tipo;
+  }
+  public set tipo(value: string) {
+      this._tipo = value;
+  }
     public get ubicacion(): string {
         return this._ubicacion;
     }
@@ -37,10 +47,22 @@ export class Dispositivo{
         this._ubicacion = value;
     }
 
-    public get electrovalvulaId(): number {
-        return this._electrovalvulaId;
+    public get marca(): string {
+      return this._marca;
     }
-    public set electrovalvulaId(value: number) {
-        this._electrovalvulaId = value;
+    public set marca(value: string) {
+      this._marca = value;
+    }
+    public get modelo(): string {
+    return this._modelo;
+    }
+    public set modelo(value: string) {
+    this._modelo = value;
+    }
+    public get estado(): number {
+        return this._estado;
+    }
+    public set estado(value: number) {
+        this._estado = value;
     }
 }

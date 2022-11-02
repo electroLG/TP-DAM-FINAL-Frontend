@@ -23,6 +23,8 @@ export class HomePage {
   async callApi(){
     try{
       this.listadoDispositivo = await this.conndb.getDispositivos();
+      console.log('DEBUG-home.page.ts  this.conndb.getDispositivos()');
+      console.log(this.listadoDispositivo);
     }
      catch(error){
       this.dbStatus=false;

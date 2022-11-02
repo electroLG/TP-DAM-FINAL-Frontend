@@ -71,4 +71,7 @@ export class ApiConnService {
   getTepelcoLogsDia(): Promise<any> {
     return this._http.get<any>('http://192.168.0.91:8000/graf/dia').toPromise();
   }
+  getTepelcoLogsLast(): Promise<any> {
+    return this._http.get<any>('http://192.168.0.91:8000/graf/last').toPromise();
+  }
 }
