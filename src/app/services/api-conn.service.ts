@@ -24,54 +24,54 @@ export class ApiConnService {
 
   getDispositivo(id): Promise<Dispositivo> {
 
-    this.dispositivo = this._http.get<Dispositivo>('http://localhost:8000/api/dispositivo/'+ id).toPromise();
+    this.dispositivo = this._http.get<Dispositivo>('http://192.168.0.91:8000/api/dispositivo/'+ id).toPromise();
     return this.dispositivo;
   }
   getDispositivos(): Promise<Array<Dispositivo>> {
 
-    this.dispositivos = this._http.get<Array<Dispositivo>>('http://localhost:8000/api/dispositivo/').toPromise();
+    this.dispositivos = this._http.get<Array<Dispositivo>>('http://192.168.0.91:8000/api/dispositivo/').toPromise();
     return this.dispositivos;
   }
 
   getUltimaMedicion(id): Promise<Medida>  {
-    this.medicion = this._http.get<Medida>('http://localhost:8000/api/medicion/' + id).toPromise();
+    this.medicion = this._http.get<Medida>('http://192.168.0.91:8000/api/medicion/' + id).toPromise();
     return this.medicion;
    }
 
    getMediciones(id): Promise<Array<Medida>> {
-    this.mediciones = this._http.get<Array<Medida>> ('http://localhost:8000/api/medicion/' + id +'/todas/').toPromise();
+    this.mediciones = this._http.get<Array<Medida>> ('http://192.168.0.91:8000/api/medicion/' + id +'/todas/').toPromise();
     return this.mediciones;
    }
 
    getLogsRiego(id): Promise<Array<Log>> {
-    this.logs = this._http.get<Array<Log>> ('http://localhost:8000/api/logRiego/' + id).toPromise();
+    this.logs = this._http.get<Array<Log>> ('http://192.168.0.91:8000/api/logRiego/' + id).toPromise();
     return this.logs;
    }
 
    getLogsRiegoEv(id): Promise<Log> {
-    this.logEv = this._http.get<Log> ('http://localhost:8000/api/logRiego/' + id + '/estado').toPromise();
+    this.logEv = this._http.get<Log> ('http://192.168.0.91:8000/api/logRiego/' + id + '/estado').toPromise();
     return this.logEv;
    }
    postLogRiego(estadoEv,fechadate,ev): Promise<any> {
     const body ={'apertura': estadoEv,'fecha': fechadate ,'electrovalvulaId':ev};
-    return this._http.post<any>('http://localhost:8000/api/logRiego/add',body).toPromise();
+    return this._http.post<any>('http://192.168.0.91:8000/api/logRiego/add',body).toPromise();
   }
   postMedicion(fechadate,valorMed,dispId): Promise<any> {
     const body ={'fecha': fechadate,'valor': valorMed,'dispositivoId':dispId};
-    return this._http.post<any>('http://localhost:8000/api/medicion/add',body).toPromise();
+    return this._http.post<any>('http://192.168.0.91:8000/api/medicion/add',body).toPromise();
   }
   //Intentos de conexión a la Base de Batos //
 
-  getTepelcoLogs(): Promise<any> {
-    return this._http.get<any>('http://192.168.0.91:8000/graf/todos').toPromise();
+  getTepelcoLogs(id): Promise<any> {
+    return this._http.get<any>('http://192.168.0.91:8000/graf/todos/' + id).toPromise();
   }
-  getTepelcoLogsSemana(): Promise<any> {
-    return this._http.get<any>('http://192.168.0.91:8000/graf/semana').toPromise();
+  getTepelcoLogsSemana(id): Promise<any> {
+    return this._http.get<any>('http://192.168.0.91:8000/graf/semana/' + id).toPromise();
   }
-  getTepelcoLogsDia(): Promise<any> {
-    return this._http.get<any>('http://192.168.0.91:8000/graf/dia').toPromise();
+  getTepelcoLogsDia(id): Promise<any> {
+    return this._http.get<any>('http://192.168.0.91:8000/graf/dia/' + id).toPromise();
   }
-  getTepelcoLogsLast(): Promise<any> {
-    return this._http.get<any>('http://192.168.0.91:8000/graf/last').toPromise();
+  getTepelcoLogsLast(id): Promise<any> {
+    return this._http.get<any>('http://192.168.0.91:8000/graf/last/' + id).toPromise();
   }
 }

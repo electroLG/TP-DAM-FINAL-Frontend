@@ -17,6 +17,7 @@ require('highcharts/modules/series-label')(Highcharts);
 })
 export class GraficoPage implements OnInit {
   logs: any;
+  data: any;
   datagraf: Array<Array<number>> = new Array<Array<number>>();
   datagraf2: Array<Array<number>> = new Array<Array<number>>();
   btnGraficoDis: boolean;
@@ -32,6 +33,8 @@ export class GraficoPage implements OnInit {
   }
 
   ionViewDidEnter() {
+    this.data=this.activatedRoute.snapshot.paramMap.get('id');
+    console.log('this.data is = ' + this.data);
      this.generarGraficoTepelco();
 
   }
@@ -41,19 +44,19 @@ export class GraficoPage implements OnInit {
   async mostrarTepelcoLogs()
   {
       this.regenerarGrafico();
-      this.logs=await this.conndb.getTepelcoLogs();
+      this.logs=await this.conndb.getTepelcoLogs(this.data);
       this.convertirDatos();
   }
   async mostrarTepelcoLogsSemana()
   {
       this.regenerarGrafico();
-      this.logs=await this.conndb.getTepelcoLogsSemana();
+      this.logs=await this.conndb.getTepelcoLogsSemana(this.data);
       this.convertirDatos();
   }
     async mostrarTepelcoLogsDia()
   {
       this.regenerarGrafico();
-      this.logs=await this.conndb.getTepelcoLogsDia();
+      this.logs=await this.conndb.getTepelcoLogsDia(this.data);
       this.convertirDatos();
   }
 

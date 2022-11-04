@@ -8,7 +8,7 @@
       <ion-title style="text-align:center;font-weight: bold;font-size:40px;">{{this.tipo}}  {{this.nombre}}</ion-title>
   </ion-toolbar>
 </ion-header>
-<div  style="text-align:center" *ngIf="!this.dbStatus">
+<!-- <div  style="text-align:center" *ngIf="!this.dbStatus">
   <br>
     <h2>¡OPS! No se pudo acceder a la Base de Datos</h2>
     <br>
@@ -16,7 +16,7 @@
     <br>
     <h4>Verifique su conexión a internet o disponibilidad del servcio.</h4>
   <br>
-</div>
+</div> -->
 <ion-content>
 <ion-grid>
   <ion-row>
@@ -66,7 +66,7 @@
     <ion-button expand="block" fill="outline" routerLink='/mediciones/{{this.data}}'>VER TODAS LAS MEDICIONES</ion-button>
     <ion-button expand="block" fill="outline" routerLink='/logs-riego/{{this.electrovalvula}}'>VER LOS RIEGOS</ion-button>
     <ion-button expand="block"  (click)="mostrarTepelcoLogs()" >VER LOGS DB Tepelco</ion-button> -->
-    <ion-button expand="block" fill="outline" routerLink='/grafico'>Gráfico Historico</ion-button>
+    <ion-button expand="block" fill="outline" routerLink="/grafico/{{dispositivo.dispositivoId}}">Gráfico Historico</ion-button>
     <ion-text *ngIf="!this.dbPostStatus" style="text-align:center;color:red" >
     <p>¡¡ NO SE PUDIERON REGISTRAR LOS DATOS !!</p>
     </ion-text>

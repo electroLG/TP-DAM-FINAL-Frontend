@@ -58,6 +58,10 @@ export class DispositivoPage  {
   ionViewWillEnter() {
   }
 
+  ionViewWillLeave(){
+    this.subscription.unsubscribe();
+  }
+
    async obtenerDatos()
    {
 
@@ -66,7 +70,7 @@ export class DispositivoPage  {
 
     try{
 
-           this.med =await this.conndb.getTepelcoLogsLast();
+           this.med =await this.conndb.getTepelcoLogsLast(this.data);
            this.dpCartucho=this.med.dp_cartucho;
            this.dpFiltro=this.med.dp_filtro;
            this.activaciones=this.med.ciclo_ev1;
@@ -84,7 +88,7 @@ export class DispositivoPage  {
 
   async mostrarTepelcoLogs()
   {
-      this.logs=await this.conndb.getTepelcoLogs();
+      this.logs=await this.conndb.getTepelcoLogs(this.data);
       console.log(this.logs);
       this.convertirDatos();
   }
