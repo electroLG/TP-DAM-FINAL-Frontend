@@ -4,7 +4,7 @@ import { ApiConnService } from '../services/api-conn.service';
 import { TimestampService } from '../services/timestamp.service';
 import { Dispositivo } from '../model/Dispositivo';
 import { ActivatedRoute } from '@angular/router';
-import * as Highcharts from 'highcharts';
+
 import { Medida } from '../model/Medida';
 import { Log } from '../model/Log';
 import { json } from 'express';
@@ -38,9 +38,11 @@ export class DispositivoPage  {
   // eslint-disable-next-line @typescript-eslint/member-ordering
 
   constructor(public conndb: ApiConnService,private activatedRoute: ActivatedRoute, public now: TimestampService) {
+
     this.dbStatus=true;
     this.dbPostStatus=true;
     this.obtenerDatos();
+
 
    }
    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
@@ -48,7 +50,7 @@ export class DispositivoPage  {
   }
 
   ionViewDidEnter() {
-    this.subscription = interval(4000).subscribe(x => {  this.obtenerDatos();});
+    this.subscription = interval(4000).subscribe(x => {  this.obtenerDatos();});//4000
 
   }
   ionViewDidLoad()
@@ -59,6 +61,15 @@ export class DispositivoPage  {
   }
 
   ionViewWillLeave(){
+    this.subscription.unsubscribe();
+  }
+  IonViewDidLeave(){
+    console.log("Paso por IonViewDidLeave");
+    this.subscription.unsubscribe();
+  }
+
+  ngOnDestroy(){
+    console.log("Paso por OnDestroy");
     this.subscription.unsubscribe();
   }
 
@@ -79,9 +90,9 @@ export class DispositivoPage  {
            this.nombre=this.dispositivo.nombre;
            this.tipo=this.dispositivo.tipo;
 
-      }
+     }
       catch (error)
-      {
+     {
         this.dbStatus=false;
       }
    }

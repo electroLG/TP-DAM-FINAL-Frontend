@@ -12,7 +12,7 @@
 
 <ion-content color="medium">
   <ion-item>
-    <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogs()">Traer todo</ion-button>
+    <!-- <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogs()">Traer todo</ion-button> -->
     <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogsSemana()">Ultima Semana</ion-button>
     <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogsDia()">Ultimo Dia</ion-button>
     <ion-label *ngIf="this.btnGraficoDis" slot="end"> Cargando datos ....</ion-label>

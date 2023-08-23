@@ -18,8 +18,18 @@ require('highcharts/modules/series-label')(Highcharts);
 export class GraficoPage implements OnInit {
   logs: any;
   data: any;
+  //230408 START
+  str1: string;
+  str2: string;
+  str3: string;
+  str4: string;
+  str_name: string;
+  str_eje: string;
+  //230408 STOP
   datagraf: Array<Array<number>> = new Array<Array<number>>();
   datagraf2: Array<Array<number>> = new Array<Array<number>>();
+  datagraf3: Array<Array<number>> = new Array<Array<number>>();
+  datagraf4: Array<Array<number>> = new Array<Array<number>>();
   btnGraficoDis: boolean;
   public mygraph;
   public graphOptions;
@@ -35,8 +45,29 @@ export class GraficoPage implements OnInit {
   ionViewDidEnter() {
     this.data=this.activatedRoute.snapshot.paramMap.get('id');
     console.log('this.data is = ' + this.data);
-     this.generarGraficoTepelco();
 
+     //230408 START
+     if(this.data === '1')
+     {
+      this.str1='TK ECUx10';
+      this.str2='TK MIXx10';
+      this.str3='FLOW ECU';
+      this.str4='O2 Disuelto';
+
+      this.str_name='Lectura de variables de Efluentes';
+      this.str_eje='Valor adimensional';
+     }
+     else{
+      this.str1='Cartucho';
+      this.str2='Filtro';
+      this.str3='act_ev1';
+      this.str4='act_ev3';
+
+      this.str_name='Diferencial de presión TEPELCO';
+      this.str_eje='Diferencial de presión [Pa]';
+     }
+     //230408 STOP
+     this.generarGraficoTepelco();
   }
   ionViewWillEnter() {
   }
@@ -80,6 +111,8 @@ convertirDatos(){
                                 Number(this.logs[i].dp_cartucho)];
 
       this.datagraf2[i]=[this.datagraf[i][0],Number(this.logs[i].dp_filtro)];
+      this.datagraf3[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev1)];
+      this.datagraf4[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev3)];
 
    }
    console.log(this.datagraf);
@@ -92,12 +125,22 @@ updateChartTepelco(){
    series: [{
       //type: 'area',
       data: this.datagraf,
-      name: 'Cartucho'
+      name: this.str1 || ''  //name: 'Cartucho'
     },
     {
       //type: 'area',
       data: this.datagraf2,
-      name: 'Filtro'
+      name: this.str2 || '' //name: 'Filtro'
+    },
+    {
+      //type: 'area',
+      data: this.datagraf3,
+      name: this.str3 || '' //name: 'Filtro'
+    },
+    {
+      //type: 'area',
+      data: this.datagraf4,
+      name: this.str4 || '' //name: 'Filtro'
     }
   ]
 });
@@ -119,7 +162,7 @@ generarGraficoTepelco(){
       zoomType: 'x'
     },
     title: {
-      text: 'Diferencial de presión TEPELCO'
+      text: this.str_name
     },
     subtitle: {
       text: document.ontouchstart === undefined ?
@@ -136,7 +179,7 @@ generarGraficoTepelco(){
     yAxis: {
       crosshair: true,
       title: {
-        text: 'Diferencial de presión [Pa]'
+        text: this.str_eje
       }
     },
     legend: {
@@ -153,13 +196,23 @@ generarGraficoTepelco(){
     },
     series: [{
       //type: 'area',
-      name: 'Cartucho',
+      name: this.str1, //name: 'Cartucho',
       data: this.datagraf
       },
       {
         //type: 'area',
-        name: 'Filtro',
+        name: this.str2, //name: 'Filtro',
         data: this.datagraf2
+      }, //nuevo
+      {
+        //type: 'area',
+        name: this.str3, //name: 'Caudal',
+        data: this.datagraf3
+      }, //nuevo
+      {
+        //type: 'area',
+        name: this.str4, //name: 'Caudal',
+        data: this.datagraf4
       }
             ]
   };
