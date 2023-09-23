@@ -23,6 +23,10 @@ export class GraficoPage implements OnInit {
   str2: string;
   str3: string;
   str4: string;
+  str5: string;
+  str6: string;
+  str7: string;
+  str8: string;
   str_name: string;
   str_eje: string;
   //230408 STOP
@@ -30,6 +34,10 @@ export class GraficoPage implements OnInit {
   datagraf2: Array<Array<number>> = new Array<Array<number>>();
   datagraf3: Array<Array<number>> = new Array<Array<number>>();
   datagraf4: Array<Array<number>> = new Array<Array<number>>();
+  datagraf5: Array<Array<number>> = new Array<Array<number>>();
+  datagraf6: Array<Array<number>> = new Array<Array<number>>();
+  datagraf7: Array<Array<number>> = new Array<Array<number>>();
+  datagraf8: Array<Array<number>> = new Array<Array<number>>();
   btnGraficoDis: boolean;
   public mygraph;
   public graphOptions;
@@ -52,7 +60,11 @@ export class GraficoPage implements OnInit {
       this.str1='TK ECUx10';
       this.str2='TK MIXx10';
       this.str3='FLOW ECU';
-      this.str4='O2 Disuelto';
+      this.str4='O2 Disuelto 1';
+      this.str5='Referencia VLT';
+      this.str6='PID Ctrl';
+      this.str7='Valvula';
+      this.str8='O2 Disuelto 2';
 
       this.str_name='Lectura de variables de Efluentes';
       this.str_eje='Valor adimensional';
@@ -90,7 +102,12 @@ export class GraficoPage implements OnInit {
       this.logs=await this.conndb.getTepelcoLogsDia(this.data);
       this.convertirDatos();
   }
-
+    async mostrarTepelcoLogs2h()
+  {
+      this.regenerarGrafico();
+      this.logs=await this.conndb.getTepelcoLogs2h(this.data);
+      this.convertirDatos();
+  }
   clearTepelcoLogs()
   {
       this.regenerarGrafico();
@@ -113,6 +130,10 @@ convertirDatos(){
       this.datagraf2[i]=[this.datagraf[i][0],Number(this.logs[i].dp_filtro)];
       this.datagraf3[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev1)];
       this.datagraf4[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev3)];
+      this.datagraf5[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev5)];
+      this.datagraf6[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev8)];
+      this.datagraf7[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev2)];
+      this.datagraf8[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev4)];
 
    }
    console.log(this.datagraf);
@@ -141,6 +162,26 @@ updateChartTepelco(){
       //type: 'area',
       data: this.datagraf4,
       name: this.str4 || '' //name: 'Filtro'
+    },
+    {
+      //type: 'area',
+      data: this.datagraf5,
+      name: this.str5 || '' //name: 'Filtro'
+    },
+    {
+      //type: 'area',
+      data: this.datagraf6,
+      name: this.str6 || '' //name: 'Filtro'
+    },
+    {
+      //type: 'area',
+      data: this.datagraf7,
+      name: this.str7 || '' //name: 'Filtro'
+    },
+    {
+      //type: 'area',
+      data: this.datagraf8,
+      name: this.str8 || '' //name: 'Filtro'
     }
   ]
 });
@@ -159,7 +200,7 @@ regenerarGrafico(){
 generarGraficoTepelco(){
   this.graphOptions={
     chart: {
-      zoomType: 'x'
+      zoomType: 'xy'
     },
     title: {
       text: this.str_name
@@ -213,7 +254,26 @@ generarGraficoTepelco(){
         //type: 'area',
         name: this.str4, //name: 'Caudal',
         data: this.datagraf4
-      }
+      }, //nuevo
+      {
+        //type: 'area',
+        name: this.str5, //name: 'Caudal',
+        data: this.datagraf5
+      }, //nuevo
+      {
+        //type: 'area',
+        name: this.str6, //name: 'Caudal',
+        data: this.datagraf6
+      }, //nuevo
+      {
+        //type: 'area',
+        name: this.str7, //name: 'Caudal',
+        data: this.datagraf7
+      }, //nuevo
+      {
+        //type: 'area',
+        name: this.str8, //name: 'Caudal',
+        data: this.datagraf8      }
             ]
   };
   this.mygraph = Highcharts.chart('container3', this.graphOptions );
