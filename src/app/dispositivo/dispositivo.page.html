@@ -23,7 +23,10 @@
     <ion-col size="12" size-sm="3">
       <ion-card>
        <ion-card-header>
-        <ion-card-title style="text-align:center">
+        <ion-card-title *ngIf="this.device" style="text-align:center">
+          Nivel Ecualizador
+        </ion-card-title>
+        <ion-card-title *ngIf="!this.device" style="text-align:center">
           Cartucho
         </ion-card-title>
        </ion-card-header>
@@ -35,7 +38,10 @@
     <ion-col size="12" size-sm="3">
       <ion-card>
         <ion-card-header>
-         <ion-card-title style="text-align:center">
+          <ion-card-title *ngIf="this.device" style="text-align:center">
+            Nivel Mezclador
+          </ion-card-title>
+         <ion-card-title *ngIf="!this.device" style="text-align:center">
            Filtro
          </ion-card-title>
         </ion-card-header>
@@ -47,7 +53,10 @@
     <ion-col size="12" size-sm="3">
       <ion-card>
         <ion-card-header>
-         <ion-card-title style="text-align:center">
+          <ion-card-title *ngIf="this.device" style="text-align:center">
+            Caudal ecualizador
+          </ion-card-title>
+         <ion-card-title *ngIf="!this.device" style="text-align:center">
            Activaciones
          </ion-card-title>
         </ion-card-header>

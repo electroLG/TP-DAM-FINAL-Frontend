@@ -78,4 +78,9 @@ export class ApiConnService {
     console.log("Paso por getTepelcoLogsLast");
     return this._http.get<any>('http://192.168.0.91:8000/graf/last/' + id).toPromise();
   }
+  //230823
+  getIntervalo(id,inicio,fin): Promise<any> {
+    const body={'inicio':inicio,'fin':fin};
+    return this._http.post<any>('http://192.168.0.91:8000/graf/intervalo/'+ id, body).toPromise();
+  }
 }

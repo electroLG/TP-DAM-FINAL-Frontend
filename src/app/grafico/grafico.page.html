@@ -10,10 +10,105 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <ion-grid style="background-color: rgb(194, 194, 194)">
+    <ion-row >
+      <ion-col size="1" class="ion-align-self-center" style="text-align:center;">
+        <ion-label>Fecha desde</ion-label>
+      </ion-col>
+      <ion-col size="3" >
+        <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime  id="datetime" (ionChange)="onIonChange($event)"></ion-datetime >
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+      <ion-col size="1" class="ion-align-self-center" style="text-align:center;">
+        <ion-label>Fecha hasta</ion-label>
+      </ion-col>
+      <ion-col size="3" >
+        <ion-datetime-button datetime="datetime2"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime2" (ionChange)="onIonChange($event)"></ion-datetime >
+          </ng-template>
+        </ion-modal>
+      </ion-col >
+      <ion-col size="2" class="ion-align-self-center" style="text-align:center">
+        <ion-label *ngIf="this.btnGraficoDis" > Cargando datos ....</ion-label>
+      </ion-col>
+      <ion-col size="2" >
+        <ion-button  size="small" [disabled]="this.btnGraficoDis" (click)="mostrarIntervalo()">Filtrar por fecha</ion-button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+ <!-- <ion-item>
+    <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarLogs()">Traer todo</ion-button>
+    <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarLogsSemana()">Ultima Semana</ion-button>
+    <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarLogsDia()">Ultimo Dia</ion-button>
+    <ion-label *ngIf="this.btnGraficoDis" slot="end"> Cargando datos ....</ion-label>
+    <ion-button [disabled]="this.btnGraficoDis" (click)="clearLogs()"slot="end" color="danger">BORRAR</ion-button>
+  </ion-item> -->
+<!-- <ion-content color="medium" > -->
+   <!-- <ion-item>
+    <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarLogs()">Traer todo</ion-button>
+    <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarLogsSemana()">Ultima Semana</ion-button>
+    <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarLogsDia()">Ultimo Dia</ion-button>
+    <ion-label *ngIf="this.btnGraficoDis" slot="end"> Cargando datos ....</ion-label>
+    <ion-button [disabled]="this.btnGraficoDis" (click)="clearLogs()"slot="end" color="danger">BORRAR</ion-button>
+  </ion-item> -->
+  <ion-grid >
+    <ion-row >
+      <ion-col size="11" >
+        <div  id="container3" style="width: 100%; height: 600px;"></div>
+      </ion-col>
+      <ion-col size="1"  style="text-align:center">
+        <!-- <ion-button style="height: 25px;font-size: x-small; width: 100px;"[disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogs()">Traer todo</ion-button> -->
+        <ion-button style="height: 25px;font-size: x-small; width: 100px;"[disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogsSemana()">Ultima Semana</ion-button>
+        <ion-button style="height: 25px;font-size: x-small; width: 100px;"[disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogsDia()">Ultimo Dia</ion-button>
+        <ion-button style="height: 25px;font-size: x-small; width: 100px;"[disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogs2h()">Ultimas 2 horas</ion-button>
+        <p>{{this.fechaDesde}}</p>
+          <p>{{this.fechaHasta}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid >
+</ion-content>
+
+<ion-footer  style="height: 40px;font-size: small;background-color: gray;color: white;">
+  <!-- <ion-toolbar color="medium" style="height: 30px;font-size: small;"> -->
+    <p style="text-align:center;">Trabajo Final de curso - DAIoT - Marcelo García</p>
+  <!-- </ion-toolbar> -->
+</ion-footer>
+<!-- <ion-datetime type="start"   (ionChange)="onIonChange($event)" locale="es-ES"></ion-datetime> -->
+<!-- <ion-datetime datetime="datetime2"    (ionChange)="onIonChange($event)" locale="es-ES"></ion-datetime> -->
+<!-- <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime  id="datetime" [(ngModel)]="this.data1" (ionChange)="test()"></ion-datetime >
+  </ng-template>
+</ion-modal> -->
+
+
+
+  <!-- OLD LAYOUT -->
+<!-- <ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button onClick="history.go(-1);">
+          <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    <br>
+    </ion-buttons>
+    <ion-title style="text-align:center;font-weight: bold;font-size:40px;">Registros históricos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content color="medium">
-  <ion-item>
-    <!-- <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogs()">Traer todo</ion-button> -->
-    <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogsSemana()">Ultima Semana</ion-button>
+  <ion-item> -->
+    <!-- ESTE NO <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogs()">Traer todo</ion-button> -->
+    <!-- <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogsSemana()">Ultima Semana</ion-button>
     <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogsDia()">Ultimo Dia</ion-button>
     <ion-button [disabled]="this.btnGraficoDis" (click)="mostrarTepelcoLogs2h()">Ultimas 2 horas</ion-button>
     <ion-label *ngIf="this.btnGraficoDis" slot="end"> Cargando datos ....</ion-label>
@@ -25,4 +120,4 @@
   <ion-toolbar color="medium">
     <h5 style="text-align:center">Ingeniería Electrónica - Luis Guillon</h5>
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->

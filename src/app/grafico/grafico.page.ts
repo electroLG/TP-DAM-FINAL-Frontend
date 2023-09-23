@@ -2,13 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { ApiConnService } from '../services/api-conn.service';
 import { ActivatedRoute } from '@angular/router';
 import * as Highcharts from 'highcharts';
+//230823
+import { DatetimeCustomEvent, IonDatetime, IonicModule } from '@ionic/angular';
+//230823
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/data')(Highcharts);
-require('highcharts/modules/exporting')(Highcharts);
+//require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/boost')(Highcharts);
-require('highcharts/modules/export-data')(Highcharts);
+//require('highcharts/modules/export-data')(Highcharts);
 require('highcharts/modules/accessibility')(Highcharts);
 require('highcharts/modules/series-label')(Highcharts);
+
 
 @Component({
   selector: 'app-grafico',
@@ -18,6 +22,12 @@ require('highcharts/modules/series-label')(Highcharts);
 export class GraficoPage implements OnInit {
   logs: any;
   data: any;
+  //230823
+  fechaDesde: any;
+  fechaHasta: any;
+  fecha: string;
+  dbStatus:boolean;
+  //230823
   //230408 START
   str1: string;
   str2: string;
@@ -45,6 +55,8 @@ export class GraficoPage implements OnInit {
 
   this.btnGraficoDis=false; //Arranco mostrando los botones
 
+
+
   }
 
   ngOnInit() {
@@ -55,29 +67,51 @@ export class GraficoPage implements OnInit {
     console.log('this.data is = ' + this.data);
 
      //230408 START
-     if(this.data === '1')
+     switch(this.data)
      {
-      this.str1='TK ECUx10';
-      this.str2='TK MIXx10';
-      this.str3='FLOW ECU';
-      this.str4='O2 Disuelto 1';
-      this.str5='Referencia VLT';
-      this.str6='PID Ctrl';
-      this.str7='Valvula';
-      this.str8='O2 Disuelto 2';
+      case '0':
+            {
+            this.str1='Cartucho';
+            this.str2='Filtro';
+            this.str3='act_ev1';
+            this.str4='act_ev3';
 
-      this.str_name='Lectura de variables de Efluentes';
-      this.str_eje='Valor adimensional';
-     }
-     else{
-      this.str1='Cartucho';
-      this.str2='Filtro';
-      this.str3='act_ev1';
-      this.str4='act_ev3';
+            this.str_name='Diferencial de presión TEPELCO';
+            this.str_eje='Diferencial de presión [Pa]';
+            }
+      break;
+      case '1':
+            {
+              this.str1='TK ECUx10';
+              this.str2='TK MIXx10';
+              this.str3='FLOW ECU';
+              this.str4='O2 Disuelto 1';
+              this.str5='Referencia VLT';
+              this.str6='PID Ctrl';
+              this.str7='Valvula';
+              this.str8='O2 Disuelto 2';
 
-      this.str_name='Diferencial de presión TEPELCO';
-      this.str_eje='Diferencial de presión [Pa]';
-     }
+              this.str_name='Lectura de variables de Efluentes';
+              this.str_eje='Valor adimensional';
+            }
+      break;
+      case '2':
+            {
+              this.str1='Canal 1';
+              this.str2='Canal 2';
+              this.str3='Canal 3';
+              this.str4='Canal 4';
+              this.str5='Canal 5';
+              this.str6='Canal 6';
+              this.str7='Canal 7';
+              this.str8='Sensor Nivel Cap';
+
+              this.str_name='Lectura de variables de Efluentes';
+              this.str_eje='Valor adimensional';
+            }
+      break;
+
+    }
      //230408 STOP
      this.generarGraficoTepelco();
   }
@@ -113,7 +147,23 @@ export class GraficoPage implements OnInit {
       this.regenerarGrafico();
       this.updateChartTepelco();
   }
-
+  //230823
+  async mostrarIntervalo()
+  {
+    if(this.check_DATE())
+    {
+      try{
+        this.regenerarGrafico();
+        this.logs=await this.conndb.getIntervalo(this.data,this.fechaDesde,this.fechaHasta);
+        this.convertirDatos();
+        }
+        catch(error)
+        {
+          this.dbStatus=false;
+        }
+    }
+  }
+  //230823
 convertirDatos(){
 
   const a = this.logs.length;
@@ -137,7 +187,9 @@ convertirDatos(){
 
    }
    console.log(this.datagraf);
+   console.log("Ahora voy a entrar al update");
    this.updateChartTepelco();
+   console.log("Sali update");
 }
 
 updateChartTepelco(){
@@ -194,6 +246,12 @@ regenerarGrafico(){
   this.generarGraficoTepelco();
   this.datagraf=[[0,0]];
   this.datagraf2=[[0,0]];
+  this.datagraf3=[[0,0]];
+  this.datagraf4=[[0,0]];
+  this.datagraf5=[[0,0]];
+  this.datagraf6=[[0,0]];
+  this.datagraf7=[[0,0]];
+  this.datagraf8=[[0,0]];
   this.logs=[[0,0]];
 }
 
@@ -205,10 +263,10 @@ generarGraficoTepelco(){
     title: {
       text: this.str_name
     },
-    subtitle: {
+   /* subtitle: {
       text: document.ontouchstart === undefined ?
         'Medido en relacion a los Pa' : 'Pinch the chart to zoom in'
-    },
+    },*/
     xAxis: {
       type: 'datetime',
       gridLineWidth: 1,
@@ -291,7 +349,91 @@ generarGraficoTepelco(){
     }
   });
 }
+//230823
+test() //flag
+  {
+    this.fecha=this.fechaDesde;
+    console.log("hola");
+  }
+  check_DATE()
+  {
+    let desde: number;
+    let hasta: number;
+    if(this.fechaDesde != null)
+    {
+      let yearDesde=Number(<string>(this.fechaDesde).substring(0,4));
+      let monthDesde=Number(<string>(this.fechaDesde).substring(5,7));
+      let dayDesde=Number(<string>(this.fechaDesde).substring(8,10));
+      let hsDesde=Number(<string>(this.fechaDesde).substring(11,13));
+      let minDesde=Number(<string>(this.fechaDesde).substring(14,16));
+      let segDesde=Number(<string>(this.fechaDesde).substring(17,19));
+      console.log(yearDesde+" "+ monthDesde+" "+ dayDesde+" "+hsDesde+" "+ minDesde+" "+ segDesde);
+      desde=Date.UTC(yearDesde,monthDesde,dayDesde,hsDesde,minDesde,segDesde);
+      console.log(desde);
+    }else{
+      console.log("No se ha ingresado Fecha Desde");
+      alert("No se ha ingresado Fecha Desde");
+      return (false);
+    }
+    if(this.fechaHasta != null)
+    {
+      let yearHasta=Number(<string>(this.fechaHasta).substring(0,4));
+      let monthHasta=Number(<string>(this.fechaHasta).substring(5,7));
+      let dayHasta=Number(<string>(this.fechaHasta).substring(8,10));
+      let hsHasta=Number(<string>(this.fechaHasta).substring(11,13));
+      let minHasta=Number(<string>(this.fechaHasta).substring(14,16));
+      let segHasta=Number(<string>(this.fechaHasta).substring(17,19));
+      console.log(yearHasta+" "+ monthHasta+" "+ dayHasta+" "+hsHasta+" "+ minHasta+" "+ segHasta);
+      hasta=Date.UTC(yearHasta,monthHasta,dayHasta,hsHasta,minHasta,segHasta);
+      console.log("hasta=",hasta);
+    }else{
+      console.log("No se ha ingresado Fecha Hasta");
+      alert("No se ha ingresado Fecha Hasta");
+      return (false);
+    }
+    if(hasta>desde)
+    {
+      if((hasta-desde)<<15768000000)
+        {
+          console.log(hasta-desde);
+          return(true);
+        }
+        else{
+          console.log(hasta-desde);
+          alert("Especifique un intervalo menor a 6 meses")
+          return(false);
+        }
+
+    }
+    else{
+      alert("La fecha final debe ser posterior a la inicial");
+      return(false);
+      }
+  }
+
+
+  onIonChange(ev: Event) {
+
+    console.log(ev.target);
+    console.log((ev.target as Element).id);
+
+    if((ev.target as Element).id=="datetime")
+    {
+      console.log("Fecha desde");
+      this.fechaDesde = (ev as DatetimeCustomEvent).detail.value;
+
+    }
+    if((ev.target as Element).id=="datetime2")
+    {
+      console.log("Fecha hasta");
+      this.fechaHasta = (ev as DatetimeCustomEvent).detail.value;
+    }
+
+  }
 }
+//}
+
+
 
 
 

@@ -21,6 +21,7 @@ import { interval} from 'rxjs';
 export class DispositivoPage  {
 
   data: string;
+  device: boolean;
   med: any; // Medida = new Medida('0','0','0','0');
   dpFiltro: any;
   dpCartucho: any;
@@ -77,6 +78,9 @@ export class DispositivoPage  {
    {
 
     this.data=this.activatedRoute.snapshot.paramMap.get('id');
+    if (this.data=== '1')
+      {this.device=true;}
+      else {this.device=false;}
     console.log('this.data is = ' + this.data);
 
     try{
