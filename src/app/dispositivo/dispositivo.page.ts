@@ -13,6 +13,7 @@ import { threadId } from 'worker_threads';
 import { Observable} from 'rxjs';
 import { interval} from 'rxjs';
 
+
 @Component({
   selector: 'app-dispositivo',
   templateUrl: './dispositivo.page.html',
@@ -22,6 +23,7 @@ export class DispositivoPage  {
 
   data: string;
   device: boolean;
+  onetime: boolean;
   med: any; // Medida = new Medida('0','0','0','0');
   dpFiltro: any;
   dpCartucho: any;
@@ -42,9 +44,10 @@ export class DispositivoPage  {
 
     this.dbStatus=true;
     this.dbPostStatus=true;
+    this.onetime=true;
+    this.data=localStorage.getItem("myId");
+    console.log('this.data is 3= ' + this.data);
     this.obtenerDatos();
-
-
    }
    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
    ngOnInit() {
@@ -76,8 +79,8 @@ export class DispositivoPage  {
 
    async obtenerDatos()
    {
-
-    this.data=this.activatedRoute.snapshot.paramMap.get('id');
+    console.log("ENntro a obtener datos");
+     // this.data=this.activatedRoute.snapshot.paramMap.get('id');
     if (this.data=== '1')
       {this.device=true;}
       else {this.device=false;}
@@ -86,13 +89,19 @@ export class DispositivoPage  {
     try{
 
            this.med =await this.conndb.getTepelcoLogsLast(this.data);
+           console.log(this.med);
            this.dpCartucho=this.med.dp_cartucho;
            this.dpFiltro=this.med.dp_filtro;
            this.activaciones=this.med.ciclo_ev1;
-           this.dispositivo = await this.conndb.getDispositivo(this.data);
+
+           if(this.onetime)
+           {
+            this.dispositivo = await this.conndb.getDispositivo(this.data);
            console.log(this.dispositivo);
            this.nombre=this.dispositivo.nombre;
            this.tipo=this.dispositivo.tipo;
+          }
+           this.onetime=false;
 
      }
       catch (error)

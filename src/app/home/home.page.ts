@@ -2,6 +2,8 @@
 import { Component } from '@angular/core';
 import { ApiConnService } from '../services/api-conn.service';
 import { Dispositivo } from '../model/Dispositivo';
+import { NavparamService } from '../services/navparam.service';
+
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,9 @@ export class HomePage {
 
   listadoDispositivo: Array<Dispositivo>;
   dbStatus: boolean;
-  constructor(public conndb: ApiConnService) {
+  idDis: any;
+  constructor(public conndb: ApiConnService,
+              private navparamService: NavparamService) {
                                               this.dbStatus=true;
                                               this.callApi();
                                               }
@@ -30,6 +34,14 @@ export class HomePage {
       this.dbStatus=false;
      }
     }
+    getId(id){
+      this.idDis=id;
+      console.log("getId = " + id );
+      //this.navparamService.setNavData(id);
+      localStorage.setItem("myId",this.idDis);
+      console.log('this.data is my iD= ' + this.idDis);
+    }
+
    ngOnInit(){
 
     }

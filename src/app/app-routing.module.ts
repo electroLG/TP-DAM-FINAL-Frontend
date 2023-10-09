@@ -12,7 +12,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'dispositivo/:id',
+    path: 'dispositivo',
     loadChildren: () => import('./dispositivo/dispositivo.module').then( m => m.DispositivoPageModule)
   },
   {
@@ -24,10 +24,9 @@ const routes: Routes = [
     loadChildren: () => import('./logs-riego/logs-riego.module').then( m => m.LogsRiegoPageModule)
   },
   {
-    path: 'grafico/:id',
+    path: 'grafico',
     loadChildren: () => import('./grafico/grafico.module').then( m => m.GraficoPageModule)
   },
-
 
 ];
 
