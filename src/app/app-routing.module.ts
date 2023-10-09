@@ -31,6 +31,10 @@ const routes: Routes = [
     path: 'bitacora',
     loadChildren: () => import('./bitacora/bitacora.module').then( m => m.BitacoraPageModule)
   },
+  {
+    path: 'eventos',
+    loadChildren: () => import('./eventos/eventos.module').then( m => m.EventosPageModule)
+  },
 
 ];
 
