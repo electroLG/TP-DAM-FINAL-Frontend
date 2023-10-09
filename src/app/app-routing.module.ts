@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'grafico',
     loadChildren: () => import('./grafico/grafico.module').then( m => m.GraficoPageModule)
   },
+  {
+    path: 'bitacora',
+    loadChildren: () => import('./bitacora/bitacora.module').then( m => m.BitacoraPageModule)
+  },
 
 ];
 
