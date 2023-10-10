@@ -12,6 +12,7 @@ import { time } from 'console';
 import { threadId } from 'worker_threads';
 import { Observable} from 'rxjs';
 import { interval} from 'rxjs';
+import { IO } from '../model/IO';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class DispositivoPage  {
   dpFiltro: any;
   dpCartucho: any;
   activaciones: any;
-  dispositivo: Dispositivo = new Dispositivo('0','nombre','ubicacion','marca','modelo','0');
+  dispositivo: Dispositivo = new Dispositivo('0','nombre','ubicacion','marca','modelo','0','0');
+  disConfig: Array<IO> = new Array<IO>();
   fecha: string;
   nombre: string;
   tipo: string;
@@ -94,13 +96,16 @@ export class DispositivoPage  {
            this.dpFiltro=this.med.dp_filtro;
            this.activaciones=this.med.ciclo_ev1;
 
-           if(this.onetime)
-           {
+          //  if(this.onetime)
+          //  {
             this.dispositivo = await this.conndb.getDispositivo(this.data);
            console.log(this.dispositivo);
            this.nombre=this.dispositivo.nombre;
            this.tipo=this.dispositivo.tipo;
-          }
+           console.log("this.dispositivo io = " + this.dispositivo.ch_config);
+           this.disConfig=IO[](this.dispositivo.ch_config);
+           console.log(this.disConfig);
+          // }
            this.onetime=false;
 
      }

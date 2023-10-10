@@ -1,3 +1,4 @@
+
 /* eslint-disable eol-last */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -11,14 +12,16 @@ export class Dispositivo{
     private _marca: string;
     private _modelo: string;
     private _estado: number;
+    private _ch_config: JSON;
 
-    constructor(dispositivo,nombre,ubicacion,marca,modelo,estado){
+    constructor(dispositivo,nombre,ubicacion,marca,modelo,estado,ch_config){
         this._dispositivoId=dispositivo;
         this._nombre=nombre;
         this._ubicacion=ubicacion;
         this._marca=marca;
         this._modelo=modelo;
         this._estado=estado;
+        this._ch_config=ch_config;
     }
 
     public get dispositivoId(): number {
@@ -64,5 +67,11 @@ export class Dispositivo{
     }
     public set estado(value: number) {
         this._estado = value;
+    }
+    public get ch_config(): JSON {
+        return this._ch_config;
+    }
+    public set ch_config(value: JSON) {
+        this._ch_config = value;
     }
 }
