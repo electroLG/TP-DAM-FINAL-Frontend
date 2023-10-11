@@ -9,13 +9,17 @@ export class IO{
     private _habilitado: boolean;
     private _tipo: string;
     private _representacion: string;
+    private _min: number;
+    private _max: number;
 
-    constructor(nombre,unidad,habilitado,tipo,representacion){
+    constructor(nombre,unidad,habilitado,tipo,representacion,min,max){
         this._nombre=nombre;
         this._unidad=unidad;
         this._habilitado=habilitado;
         this._tipo=tipo;
         this._representacion=representacion;
+        this._min=min;
+        this._max=max;
     }
 
     public get nombre(): string {
@@ -50,5 +54,17 @@ export class IO{
     }
     public set representacion(value: string) {
         this._representacion = value;
+    }
+    public get min(): number {
+        return this._min;
+    }
+    public set min(value: number) {
+        this._min = value;
+    }
+    public get max(): number {
+        return this._max;
+    }
+    public set max(value: number) {
+        this._min = value;
     }
 }

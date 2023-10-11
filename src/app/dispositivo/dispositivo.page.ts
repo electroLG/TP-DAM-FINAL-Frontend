@@ -13,6 +13,7 @@ import { threadId } from 'worker_threads';
 import { Observable} from 'rxjs';
 import { interval} from 'rxjs';
 import { IO } from '../model/IO';
+import { StringDecoder } from 'string_decoder';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class DispositivoPage  {
   dpCartucho: any;
   activaciones: any;
   dispositivo: Dispositivo = new Dispositivo('0','nombre','ubicacion','marca','modelo','0','0');
-  disConfig: Array<IO> = new Array<IO>();
+  disConfig: Array<IO>;
   fecha: string;
   nombre: string;
   tipo: string;
@@ -39,6 +40,8 @@ export class DispositivoPage  {
   logs:any;
   subscription: any;
   datagraf: Array<Array<number>> = new Array<Array<number>>();
+  dataDev: Array<string>;
+  otherData: Array<JSON>;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
 
@@ -91,7 +94,11 @@ export class DispositivoPage  {
     try{
 
            this.med =await this.conndb.getTepelcoLogsLast(this.data);
-           console.log(this.med);
+           console.log(JSON.stringify(this.med));
+           let myStr=JSON.stringify(this.med);
+           this.dataDev =JSON.parse('[' + myStr.replace(/,/g, '},{') + ']');
+           console.log(this.dataDev );
+           console.log(String(this.dataDev[3]));
            this.dpCartucho=this.med.dp_cartucho;
            this.dpFiltro=this.med.dp_filtro;
            this.activaciones=this.med.ciclo_ev1;
@@ -103,7 +110,7 @@ export class DispositivoPage  {
            this.nombre=this.dispositivo.nombre;
            this.tipo=this.dispositivo.tipo;
            console.log("this.dispositivo io = " + this.dispositivo.ch_config);
-           this.disConfig=IO[](this.dispositivo.ch_config);
+           this.disConfig=JSON.parse(String(this.dispositivo.ch_config));
            console.log(this.disConfig);
           // }
            this.onetime=false;

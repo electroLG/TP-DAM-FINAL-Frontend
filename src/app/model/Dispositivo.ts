@@ -4,6 +4,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable no-underscore-dangle */
 
+import { IO } from "./IO";
+
 export class Dispositivo{
     private _dispositivoId: number;
     private _nombre: string;
@@ -12,7 +14,7 @@ export class Dispositivo{
     private _marca: string;
     private _modelo: string;
     private _estado: number;
-    private _ch_config: JSON;
+    private _ch_config: Array<IO>;
 
     constructor(dispositivo,nombre,ubicacion,marca,modelo,estado,ch_config){
         this._dispositivoId=dispositivo;
@@ -68,10 +70,10 @@ export class Dispositivo{
     public set estado(value: number) {
         this._estado = value;
     }
-    public get ch_config(): JSON {
+    public get ch_config(): Array<IO> {
         return this._ch_config;
     }
-    public set ch_config(value: JSON) {
+    public set ch_config(value: Array<IO>) {
         this._ch_config = value;
     }
 }
