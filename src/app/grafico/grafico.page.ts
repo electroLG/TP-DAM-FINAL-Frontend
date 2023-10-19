@@ -5,6 +5,8 @@ import * as Highcharts from 'highcharts';
 import { NavparamService } from '../services/navparam.service';
 //230823
 import { DatetimeCustomEvent, IonDatetime, IonicModule } from '@ionic/angular';
+import { IO } from '../model/IO';
+import { Dispositivo } from '../model/Dispositivo';
 //230823
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/data')(Highcharts);
@@ -28,6 +30,8 @@ export class GraficoPage implements OnInit {
   fechaHasta: any;
   fecha: string;
   dbStatus:boolean;
+  disConfig:Array<IO>;
+  dispositivo: Dispositivo = new Dispositivo('0','nombre','ubicacion','marca','modelo','0','0'); 
   //230823
   //230408 START
   str1: string;
@@ -67,11 +71,11 @@ export class GraficoPage implements OnInit {
         //console.log('this.data is 2= ' + this.data);
         if(!this.data)
         {
-          this.data=localStorage.getItem("myId");
+          this.data=sessionStorage.getItem("myId");
           console.log('this.data is 3= ' + this.data);
         }else
           {
-            localStorage.setItem("myId",this.data);
+            sessionStorage.setItem("myId",this.data);
             console.log('this.data is 4= ' + this.data);
           }
         //this.datosDispositivo();                                         //Traigo de la base los datos del sensor
@@ -387,53 +391,21 @@ test() //flag
       return(false);
       }
   }
-graphSeries()
+async graphSeries()
 {
-  switch(this.data)
-  {
-   case '0':
-         {
-         this.str1='Cartucho';
-         this.str2='Filtro';
-         this.str3='act_ev1';
-         this.str4='act_ev3';
+  this.dispositivo = await this.conndb.getDispositivo(this.data);
+  this.disConfig=JSON.parse(String(this.dispositivo.ch_config));
+  console.log("this.disConfig");
+  console.log(this.disConfig);
+  this.str1=this.disConfig[0].nombre;
+  this.str2=this.disConfig[1].nombre;
+  this.str3=this.disConfig[2].nombre;
+  this.str4=this.disConfig[3].nombre;
+  this.str5=this.disConfig[4].nombre;
+  this.str6=this.disConfig[5].nombre;
+  this.str7=this.disConfig[6].nombre;
+  this.str8=this.disConfig[7].nombre;
 
-         this.str_name='Diferencial de presión TEPELCO';
-         this.str_eje='Diferencial de presión [Pa]';
-         }
-   break;
-   case '1':
-         {
-           this.str1='TK ECUx10';
-           this.str2='TK MIXx10';
-           this.str3='FLOW ECU';
-           this.str4='O2 Disuelto 1';
-           this.str5='Referencia VLT';
-           this.str6='PID Ctrl';
-           this.str7='Valvula';
-           this.str8='O2 Disuelto 2';
-
-           this.str_name='Lectura de variables de Efluentes';
-           this.str_eje='Valor adimensional';
-         }
-   break;
-   case '2':
-         {
-           this.str1='Canal 1';
-           this.str2='Canal 2';
-           this.str3='Canal 3';
-           this.str4='Canal 4';
-           this.str5='Canal 5';
-           this.str6='Canal 6';
-           this.str7='Canal 7';
-           this.str8='Sensor Nivel Cap';
-
-           this.str_name='Lectura TESTING laboratorio Electrónica';
-           this.str_eje='Valor adimensional';
-         }
-   break;
-
- }
 }
 
   onIonChange(ev: Event) {
@@ -455,7 +427,7 @@ graphSeries()
 
   }
 }
-//}
+
 
 
 

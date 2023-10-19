@@ -38,7 +38,7 @@ export class HomePage {
       this.idDis=id;
       console.log("getId = " + id );
       //this.navparamService.setNavData(id);
-      localStorage.setItem("myId",this.idDis);
+      sessionStorage.setItem("myId",this.idDis);
       console.log('this.data is my iD= ' + this.idDis);
     }
 

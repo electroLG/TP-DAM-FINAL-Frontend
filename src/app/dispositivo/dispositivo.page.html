@@ -5,7 +5,7 @@
               <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
           </ion-button>
       </ion-buttons>
-      <ion-title style="text-align:center;font-weight: bold;font-size:40px;">{{this.tipo}}  {{this.nombre}}</ion-title>
+      <ion-title style="text-align:center;font-weight: bold;font-size:40px;">{{this.tipo}} - {{this.nombre}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <!-- <div  style="text-align:center" *ngIf="!this.dbStatus">
@@ -45,10 +45,10 @@
            <br /><br /> 
         </ion-card-content>
        <ion-card-content style="text-align:center" *ngIf="this.disConfig[i].representacion==='grafico'">
-        <ion-label>{{this.dataDev[2 + i]}}</ion-label>
+        <label style="font-size: 80px"><b>{{this.datos[i+1].id}}</b></label>
         </ion-card-content>
-       <ion-card-content style="text-align:center" *ngIf="this.disConfig[i].representacion==='numero'">
-        <ion-label>{{this.dataDev[2 + i]}}</ion-label>
+       <ion-card-content style="text-align:center" *ngIf="this.disConfig[i].representacion==='num'">
+        <label style="font-size: 80px"><b>{{this.datos[i+1].id}}</b></label>
        </ion-card-content>
        <ion-card-content>
          <ion-card-subtitle style="text-align:center">{{this.disConfig[i].unidad}}</ion-card-subtitle>
@@ -67,7 +67,7 @@
         </ion-card-title>
        </ion-card-header>
        <ion-card-content style="text-align:center">
-        <label style="font-size: 100px"><b>{{this.dpCartucho}}</b></label>
+        <label style="font-size: 100px">{{this.dpCartucho}}</b></label>
         <ion-card-subtitle>rpm</ion-card-subtitle>
        </ion-card-content>
       </ion-card>

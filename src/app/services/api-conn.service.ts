@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Dispositivo } from '../model/Dispositivo';
 import { Medida } from '../model/Medida';
 import { Log } from '../model/Log';
+import { Bitacora } from '../model/Bitacora';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class ApiConnService {
   HOST='192.168.0.103';;//HOST="192.168.0.186";//HOST='192.168.0.103';
   PORT='8000';
 
+  bitacora: Promise<Array<Bitacora>>;
   dispositivo:  Promise<Dispositivo>;
   dispositivos: Promise<Array<Dispositivo>>;
   medicion: Promise<Medida>;
@@ -86,5 +88,13 @@ export class ApiConnService {
   getIntervalo(id,inicio,fin): Promise<any> {
     const body={'inicio':inicio,'fin':fin};
     return this._http.post<any>('http://'+this.HOST+':'+this.PORT+'/graf/intervalo/'+ id, body).toPromise();
+  }
+  postBitacora(titulo,contenido,usuario,idDis): Promise<any>{
+    const body={'titulo':titulo,'contenido':contenido,'usuario':usuario,'idDis':idDis};
+    return this._http.post('http://'+this.HOST+':'+this.PORT+'/bitacora/post/',body,{responseType: "text"}).toPromise();
+  }
+  getBitacora(id):Promise<Array<Bitacora>> {
+    this.bitacora = this._http.get<Array<Bitacora>>('http://'+this.HOST+':'+this.PORT+'/bitacora/get/'+ id).toPromise();
+    return this.bitacora;
   }
 }

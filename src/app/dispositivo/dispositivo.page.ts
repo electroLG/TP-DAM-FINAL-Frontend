@@ -4,7 +4,7 @@ import { ApiConnService } from '../services/api-conn.service';
 import { TimestampService } from '../services/timestamp.service';
 import { Dispositivo } from '../model/Dispositivo';
 import { ActivatedRoute } from '@angular/router';
-
+import { data } from '../model/data';
 import { Medida } from '../model/Medida';
 import { Log } from '../model/Log';
 import { json } from 'express';
@@ -13,7 +13,7 @@ import { threadId } from 'worker_threads';
 import { Observable} from 'rxjs';
 import { interval} from 'rxjs';
 import { IO } from '../model/IO';
-import { StringDecoder } from 'string_decoder';
+
 
 
 @Component({
@@ -22,7 +22,11 @@ import { StringDecoder } from 'string_decoder';
   styleUrls: ['./dispositivo.page.scss'],
 })
 export class DispositivoPage  {
-
+  string1: string;
+  string2: string;
+  string3: string;
+  string4: string;
+  datos: Array<data>;
   data: string;
   device: boolean;
   onetime: boolean;
@@ -32,8 +36,10 @@ export class DispositivoPage  {
   activaciones: any;
   dispositivo: Dispositivo = new Dispositivo('0','nombre','ubicacion','marca','modelo','0','0');
   disConfig: Array<IO>;
+  disConfig2: Array<IO>=new Array<IO>();
   fecha: string;
   nombre: string;
+  ubicacion: string;
   tipo: string;
   dbStatus: boolean;
   dbPostStatus: boolean;
@@ -50,7 +56,7 @@ export class DispositivoPage  {
     this.dbStatus=true;
     this.dbPostStatus=true;
     this.onetime=true;
-    this.data=localStorage.getItem("myId");
+    this.data=sessionStorage.getItem("myId");
     console.log('this.data is 3= ' + this.data);
     this.obtenerDatos();
    }
@@ -84,43 +90,195 @@ export class DispositivoPage  {
 
    async obtenerDatos()
    {
-    console.log("ENntro a obtener datos");
-     // this.data=this.activatedRoute.snapshot.paramMap.get('id');
-    if (this.data=== '1')
-      {this.device=true;}
-      else {this.device=false;}
-    console.log('this.data is = ' + this.data);
+      console.log("ENntro a obtener datos");
+      // this.data=this.activatedRoute.snapshot.paramMap.get('id');
+      if (this.data=== '1')
+        {this.device=true;}
+        else {this.device=false;}
+      console.log('this.data is = ' + this.data);
+        try{
+              this.med =await this.conndb.getTepelcoLogsLast(this.data);
+              let myStr=JSON.stringify(this.med);
+              this.dataDev =JSON.parse('[' + myStr.replace(/,/g, '},{') + ']');
+              this.dpCartucho=this.med.dp_cartucho;
+              this.dpFiltro=this.med.dp_filtro;
+              this.activaciones=this.med.ciclo_ev1;
+              this.string2="";
+              for(let i=1;i<this.dataDev.length;i++)
+                  { 
+                          this.string1=JSON.stringify(this.dataDev[i]);
+                          let inicio=this.string1.search('{');
+                          let final=this.string1.search(':');
+                          let c=inicio;
+                              while(c<=final)
+                              {
+                                this.string1=this.string1.replace(this.string1[c],"");
+                                final--;
+                              }
+                          this.string1=this.string1.replace(" ","");
+                          let a=this.string2.concat('{"id":',this.string1);
+                          this.string2=a;
+                          this.string2=this.string2.replace(/}{/g,'},{');
+                  }
+            this.string3='['+this.string2+']';
+            this.datos=JSON.parse(this.string3);
+            console.log("this.datos");
+            console.log(this.datos);
+//--------------------------------------------------------------------------------------------------------
 
-    try{
-
-           this.med =await this.conndb.getTepelcoLogsLast(this.data);
-           console.log(JSON.stringify(this.med));
-           let myStr=JSON.stringify(this.med);
-           this.dataDev =JSON.parse('[' + myStr.replace(/,/g, '},{') + ']');
-           console.log(this.dataDev );
-           console.log(String(this.dataDev[3]));
-           this.dpCartucho=this.med.dp_cartucho;
-           this.dpFiltro=this.med.dp_filtro;
-           this.activaciones=this.med.ciclo_ev1;
-
-          //  if(this.onetime)
-          //  {
             this.dispositivo = await this.conndb.getDispositivo(this.data);
-           console.log(this.dispositivo);
-           this.nombre=this.dispositivo.nombre;
-           this.tipo=this.dispositivo.tipo;
-           console.log("this.dispositivo io = " + this.dispositivo.ch_config);
-           this.disConfig=JSON.parse(String(this.dispositivo.ch_config));
-           console.log(this.disConfig);
-          // }
-           this.onetime=false;
+            this.nombre=this.dispositivo.nombre;
+            this.ubicacion=this.dispositivo.ubicacion;
+            this.tipo=this.dispositivo.tipo;
+            this.disConfig=JSON.parse(String(this.dispositivo.ch_config));
+            console.log("this.disConfig");
+            console.log(this.disConfig);
+            let lng=this.disConfig2.length;
+            console.log("longitud de this.disConfig2.length" );
+            for(let i=0;i<lng;i++)
+            {
+             this.disConfig2.pop();
+            }
+            console.log("la longitud dsd del for de this.cfgcanal2 es " + this.disConfig2.length);
+            console.log("this.datos");
+            console.log(this.datos);
+ 
+ 
+            var j=0;
+            let lng2=this.disConfig.length;
+            for(let i=0;i<lng2;i++)
+            {  
+               
+              if (this.disConfig[i].habilitado)
+               { 
+                 this.disConfig2.push(this.disConfig[i]);   //this.cfgcanal[i];
+  
+               }
+               if (!this.disConfig[i].habilitado)
+               {
+                 console.log(this.datos[i]);
+                 this.datos.splice(i-j,1);
+                 j++;
+               }
+             }
+            console.log(this.disConfig2);
+            console.log("this.datos");
+            console.log(this.datos);
+            console.log("this.dataDev");
+            console.log(this.dataDev);
+            console.log("this.disConfig");
+            console.log(this.disConfig);
 
-     }
-      catch (error)
-     {
-        this.dbStatus=false;
-      }
+
+//----------------------------------------------------------------------------------------------
+            // this.dispositivo = await this.conndb.getDispositivo(this.data);
+            // console.log(this.dispositivo);
+            // this.nombre=this.dispositivo.nombre;
+            // this.tipo=this.dispositivo.tipo;
+            // console.log("this.dispositivo io = " + this.dispositivo.ch_config);
+            // this.disConfig=JSON.parse(String(this.dispositivo.ch_config));
+            // console.log(this.disConfig);
+
+            this.onetime=false;
+
+        }
+          catch (error)
+        {
+            this.dbStatus=false;
+          }
    }
+
+  //  async obtenerDatos()
+  //  {
+  //   try{
+
+  //           this.med=await this.conndb.getTepelcoLogsLast(this.data);
+  //           this.med2=JSON.stringify(this.med);
+  //           this.medObj=JSON.parse('[' + this.med2.replace(/,/g, '},{') + ']');    
+  //           console.log(this.medObj.length);
+  //           this.string2="";
+  //           this.string3='[';
+  //           for(let i=2;i<this.medObj.length;i++)
+  //               { 
+  //                       this.string1=JSON.stringify(this.medObj[i]);
+  //                       let inicio=this.string1.search('{');
+  //                       let final=this.string1.search(':');
+  //                       let c=inicio;
+  //                           while(c<=final)
+  //                           {
+  //                             this.string1=this.string1.replace(this.string1[c],"");
+  //                             final--; 
+  //                           }
+  //                       this.string1=this.string1.replace("","");
+  //                       let a=this.string2.concat('{"id":',this.string1);
+  //                       this.string2=a;
+  //                       this.string2=this.string2.replace(/}{/g, '},{');
+  //               }
+  //           this.string3='['+this.string2+']';    
+  //           this.datos=JSON.parse(this.string3); 
+
+
+  //          this.dispositivo = await this.conndb.getDispositivo(this.data);
+  //          this.cfgcanal=JSON.parse(String(this.dispositivo.cfg));
+  //          let lng=this.cfgcanal2.length;
+  //          for(let i=0;i<lng;i++)
+  //          {
+  //           this.cfgcanal2.pop();
+  //          }
+  //          console.log("la longitud dsd del for de this.cfgcanal2 es " + this.cfgcanal2.length);
+  //          console.log("this.datos");
+  //          console.log(this.datos);
+
+
+  //          var j=0;
+  //          let lng2=this.cfgcanal.length;
+  //          for(let i=0;i<lng2;i++)
+  //          {  
+              
+  //            if (this.cfgcanal[i].habilitado)
+  //             { 
+  //               this.cfgcanal2.push(this.cfgcanal[i]);   //this.cfgcanal[i];
+ 
+  //             }
+  //             if (!this.cfgcanal[i].habilitado)
+  //             {
+  //               console.log(this.datos[i]);
+  //               this.datos.splice(i-j,1);
+  //               j++;
+  //             }
+  //           }
+  //          console.log(this.cfgcanal2);
+  //          console.log("this.datos");
+  //          console.log(this.datos);
+  //          console.log("this.medObj");
+  //          console.log(this.medObj);
+  //          console.log("this.cfgcanal");
+  //          console.log(this.cfgcanal);
+
+  //          this.temperatura=(this.med.temperatura );
+  //          this.humedad=this.med.humedad;
+  //          this.presion=this.med.presion;
+  //          this.canal1=this.med.canal1;
+  //          this.canal2=this.med.canal2;
+  //          this.timestamp=this.med.timestamp;
+  //          this.nombre=this.dispositivo.nombre;
+  //          this.ubicacion=this.dispositivo.ubicacion;
+  //          this.servicio=this.dispositivo.servicio;
+  //          this.sampling=this.dispositivo.sampling;
+  //          this.topico=this.dispositivo.topicoServ;
+  //          this.convertirDatos();         
+  //    }
+  //    catch (error)
+  //     {
+  //       this.dbStatus=false;
+  //       console.log('error');
+  //     }
+
+  //     this.dataReady=true;    //Dibujo página luego de consultar los datos
+  //     console.log("dataReady");
+  //    }
+
+
 
   async mostrarTepelcoLogs()
   {
