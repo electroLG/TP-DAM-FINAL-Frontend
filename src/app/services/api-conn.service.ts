@@ -14,7 +14,7 @@ import { Bitacora } from '../model/Bitacora';
 export class ApiConnService {
 
 
-  HOST='192.168.0.103';;//HOST="192.168.0.186";//HOST='192.168.0.103';
+  HOST='192.168.0.91';//HOST="192.168.0.186";//HOST='192.168.0.103';
   PORT='8000';
 
   bitacora: Promise<Array<Bitacora>>;

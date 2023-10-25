@@ -67,7 +67,7 @@ export class DispositivoPage  {
   }
 
   ionViewDidEnter() {
-    this.subscription = interval(4000).subscribe(x => {  this.obtenerDatos();});//4000
+    this.subscription = interval(5000).subscribe(x => {  this.obtenerDatos();});//4000
 
   }
   ionViewDidLoad()
@@ -107,7 +107,7 @@ export class DispositivoPage  {
               this.activaciones=this.med.ciclo_ev1;
               this.string2="";
               for(let i=1;i<this.dataDev.length;i++)
-                  { 
+                  {
                           this.string1=JSON.stringify(this.dataDev[i]);
                           let inicio=this.string1.search('{');
                           let final=this.string1.search(':');
@@ -144,17 +144,17 @@ export class DispositivoPage  {
             console.log("la longitud dsd del for de this.cfgcanal2 es " + this.disConfig2.length);
             console.log("this.datos");
             console.log(this.datos);
- 
- 
+
+
             var j=0;
             let lng2=this.disConfig.length;
             for(let i=0;i<lng2;i++)
-            {  
-               
+            {
+
               if (this.disConfig[i].habilitado)
-               { 
+               {
                  this.disConfig2.push(this.disConfig[i]);   //this.cfgcanal[i];
-  
+
                }
                if (!this.disConfig[i].habilitado)
                {
@@ -196,12 +196,12 @@ export class DispositivoPage  {
 
   //           this.med=await this.conndb.getTepelcoLogsLast(this.data);
   //           this.med2=JSON.stringify(this.med);
-  //           this.medObj=JSON.parse('[' + this.med2.replace(/,/g, '},{') + ']');    
+  //           this.medObj=JSON.parse('[' + this.med2.replace(/,/g, '},{') + ']');
   //           console.log(this.medObj.length);
   //           this.string2="";
   //           this.string3='[';
   //           for(let i=2;i<this.medObj.length;i++)
-  //               { 
+  //               {
   //                       this.string1=JSON.stringify(this.medObj[i]);
   //                       let inicio=this.string1.search('{');
   //                       let final=this.string1.search(':');
@@ -209,15 +209,15 @@ export class DispositivoPage  {
   //                           while(c<=final)
   //                           {
   //                             this.string1=this.string1.replace(this.string1[c],"");
-  //                             final--; 
+  //                             final--;
   //                           }
   //                       this.string1=this.string1.replace("","");
   //                       let a=this.string2.concat('{"id":',this.string1);
   //                       this.string2=a;
   //                       this.string2=this.string2.replace(/}{/g, '},{');
   //               }
-  //           this.string3='['+this.string2+']';    
-  //           this.datos=JSON.parse(this.string3); 
+  //           this.string3='['+this.string2+']';
+  //           this.datos=JSON.parse(this.string3);
 
 
   //          this.dispositivo = await this.conndb.getDispositivo(this.data);
@@ -235,12 +235,12 @@ export class DispositivoPage  {
   //          var j=0;
   //          let lng2=this.cfgcanal.length;
   //          for(let i=0;i<lng2;i++)
-  //          {  
-              
+  //          {
+
   //            if (this.cfgcanal[i].habilitado)
-  //             { 
+  //             {
   //               this.cfgcanal2.push(this.cfgcanal[i]);   //this.cfgcanal[i];
- 
+
   //             }
   //             if (!this.cfgcanal[i].habilitado)
   //             {
@@ -268,7 +268,7 @@ export class DispositivoPage  {
   //          this.servicio=this.dispositivo.servicio;
   //          this.sampling=this.dispositivo.sampling;
   //          this.topico=this.dispositivo.topicoServ;
-  //          this.convertirDatos();         
+  //          this.convertirDatos();
   //    }
   //    catch (error)
   //     {

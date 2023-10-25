@@ -31,7 +31,7 @@ export class GraficoPage implements OnInit {
   fecha: string;
   dbStatus:boolean;
   disConfig:Array<IO>;
-  dispositivo: Dispositivo = new Dispositivo('0','nombre','ubicacion','marca','modelo','0','0'); 
+  dispositivo: Dispositivo = new Dispositivo('0','nombre','ubicacion','marca','modelo','0','0');
   //230823
   //230408 START
   str1: string;
@@ -61,8 +61,8 @@ export class GraficoPage implements OnInit {
               private activatedRoute: ActivatedRoute) {
 
   this.btnGraficoDis=false;                                        //Arranco mostrando los botones
-        
-  
+
+
   //this.data=this.activatedRoute.snapshot.paramMap.get('id');       //Obtengo el sensor con el id
         console.log('Constructor graph');
         console.log('this.data is 1 = ' + this.data);
@@ -400,11 +400,11 @@ async graphSeries()
   this.str1=this.disConfig[0].nombre;
   this.str2=this.disConfig[1].nombre;
   this.str3=this.disConfig[2].nombre;
-  this.str4=this.disConfig[3].nombre;
-  this.str5=this.disConfig[4].nombre;
-  this.str6=this.disConfig[5].nombre;
-  this.str7=this.disConfig[6].nombre;
-  this.str8=this.disConfig[7].nombre;
+  this.str4=this.disConfig[4].nombre;
+  this.str5=this.disConfig[6].nombre;
+  this.str6=this.disConfig[9].nombre;
+  this.str7=this.disConfig[3].nombre;
+  this.str8=this.disConfig[5].nombre;
 
 }
 
