@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DispositivoPageRoutingModule } from './dispositivo-routing.module';
 
 import { DispositivoPage } from './dispositivo.page';
+import { SharedPipeModuleModule } from '../shared-pipe-module/shared-pipe-module.module';
 
 
 
@@ -15,8 +16,9 @@ import { DispositivoPage } from './dispositivo.page';
     CommonModule,
     FormsModule,
     IonicModule,
-     DispositivoPageRoutingModule
+    DispositivoPageRoutingModule,
+    SharedPipeModuleModule
   ],
-  declarations: [DispositivoPage,UnitPipe]
+  declarations: [DispositivoPage]
 })
 export class DispositivoPageModule {}

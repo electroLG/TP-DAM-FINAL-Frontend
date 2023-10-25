@@ -8,15 +8,16 @@ import { IonicModule } from '@ionic/angular';
 import { LogsRiegoPageRoutingModule } from './logs-riego-routing.module';
 
 import { LogsRiegoPage } from './logs-riego.page';
+import { SharedPipeModuleModule } from '../shared-pipe-module/shared-pipe-module.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-
+    SharedPipeModuleModule,
     LogsRiegoPageRoutingModule
   ],
-  declarations: [LogsRiegoPage,AperturaPipe,FechaPipe]
+  declarations: [LogsRiegoPage]
 })
 export class LogsRiegoPageModule {}

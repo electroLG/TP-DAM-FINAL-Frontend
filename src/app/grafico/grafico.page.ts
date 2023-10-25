@@ -156,15 +156,15 @@ convertirDatos(){
                                 Number(this.logs[i].fecha.substring(11,13)),
                                 Number(this.logs[i].fecha.substring(14,16)),
                                 Number(this.logs[i].fecha.substring(17,19))),
-                                Number(this.logs[i].dp_cartucho)];
+                                Number(this.logs[i].d1)];
 
-      this.datagraf2[i]=[this.datagraf[i][0],Number(this.logs[i].dp_filtro)];
-      this.datagraf3[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev1)];
-      this.datagraf4[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev3)];
-      this.datagraf5[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev5)];
-      this.datagraf6[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev8)];
-      this.datagraf7[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev2)];
-      this.datagraf8[i]=[this.datagraf[i][0],Number(this.logs[i].ciclo_ev4)];
+      this.datagraf2[i]=[this.datagraf[i][0],Number(this.logs[i].d2)];
+      this.datagraf3[i]=[this.datagraf[i][0],Number(this.logs[i].d3)];
+      this.datagraf4[i]=[this.datagraf[i][0],Number(this.logs[i].d5)];
+      this.datagraf5[i]=[this.datagraf[i][0],Number(this.logs[i].d7)];
+      this.datagraf6[i]=[this.datagraf[i][0],Number(this.logs[i].d10)];
+      this.datagraf7[i]=[this.datagraf[i][0],Number(this.logs[i].d4)];
+      this.datagraf8[i]=[this.datagraf[i][0],Number(this.logs[i].d6)];
 
    }
    console.log(this.datagraf);

@@ -7,14 +7,16 @@ import { FechaPipe } from '../pipes/fecha.pipe';
 import { BitacoraPageRoutingModule } from './bitacora-routing.module';
 
 import { BitacoraPage } from './bitacora.page';
+import { SharedPipeModuleModule } from '../shared-pipe-module/shared-pipe-module.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    BitacoraPageRoutingModule
+    BitacoraPageRoutingModule,
+    SharedPipeModuleModule
   ],
-  declarations: [BitacoraPage, FechaPipe]
+  declarations: [BitacoraPage]
 })
 export class BitacoraPageModule {}

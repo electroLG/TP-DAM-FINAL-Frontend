@@ -48,11 +48,13 @@ export class DispositivoPage  {
   datagraf: Array<Array<number>> = new Array<Array<number>>();
   dataDev: Array<string>;
   otherData: Array<JSON>;
+  btnGraficoDis: boolean;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
 
   constructor(public conndb: ApiConnService,private activatedRoute: ActivatedRoute, public now: TimestampService) {
 
+    this.btnGraficoDis=false;
     this.dbStatus=true;
     this.dbPostStatus=true;
     this.onetime=true;

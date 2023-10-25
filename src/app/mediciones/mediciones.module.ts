@@ -8,14 +8,16 @@ import { IonicModule } from '@ionic/angular';
 import { MedicionesPageRoutingModule } from './mediciones-routing.module';
 
 import { MedicionesPage } from './mediciones.page';
+import { SharedPipeModuleModule } from '../shared-pipe-module/shared-pipe-module.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MedicionesPageRoutingModule
+    MedicionesPageRoutingModule,
+    SharedPipeModuleModule,
   ],
-  declarations: [MedicionesPage, UnitPipe,FechaPipe]
+  declarations: [MedicionesPage]
 })
 export class MedicionesPageModule {}
